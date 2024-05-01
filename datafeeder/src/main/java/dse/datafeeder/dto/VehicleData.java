@@ -8,7 +8,7 @@ public class VehicleData {
 
     private String vin;     // len=17
     private Coordinates coordinates;
-    private double speed;   // [0.0, 1000.0]
+    private double speed;   // [0.0, 1000.0], in km/h
     private int lane;       // [1, 3]
     private Timestamp timestamp;
 
@@ -79,6 +79,12 @@ public class VehicleData {
         this.timestamp = timestamp;
     }
 
+    public VehicleData deepCopy() {
+        return new VehicleData(this.getVin(), new Coordinates(this.getCoordinates().getLongitude(),
+                this.getCoordinates().getLatitude()), this.getSpeed(), this.getLane(),
+                new Timestamp(this.getTimestamp().getTime()));
+    }
+
     private boolean checkVin(String vin) {
         return vin != null && vin.length() == 17 && vin.matches("^(?=.*[0-9])(?=.*[A-z])[0-9A-z-]{17}$");
     }
@@ -89,5 +95,16 @@ public class VehicleData {
 
     protected boolean checkLane(int lane) {
         return lane >= 1 && lane <= 3;
+    }
+
+    @Override
+    public String toString() {
+        return "VehicleData{" +
+                "vin='" + vin + '\'' +
+                ", coordinates=" + coordinates +
+                ", speed=" + speed +
+                ", lane=" + lane +
+                ", timestamp=" + timestamp +
+                '}';
     }
 }

@@ -1,0 +1,19 @@
+package dse.datafeeder.constants;
+
+public class Constants {
+
+    public static final int EARTH_RADIUS = 6371;
+
+    // We assume that one lane is ~3.25m wide.
+    public static final double START_FIRST_LANE_LON = 48.199064;
+    public static final double START_FIRST_LANE_LAT = 16.370004;
+
+    public static final double START_SECOND_LANE_LON = 48.199064;
+    public static final double START_SECOND_LANE_LAT = 16.369975;
+
+    public static final double START_THIRD_LANE_LON = 48.199064;
+    public static final double START_THIRD_LANE_LAT = 16.369946;
+
+    public static final double MOVEMENT_SIDEWAYS_PER_TICK = 0.1;    // in meters
+    public static final int SPEED_INCREASE_PER_TICK = 1;            // in km/h
+}

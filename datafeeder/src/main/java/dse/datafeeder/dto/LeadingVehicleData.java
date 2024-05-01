@@ -39,4 +39,18 @@ public class LeadingVehicleData extends VehicleData {
     public void setTargetLane(int targetLane) {
         this.targetLane = targetLane;
     }
+
+    public LeadingVehicleData deepCopy() {
+        return new LeadingVehicleData(this.getVin(), new Coordinates(this.getCoordinates().getLongitude(),
+                this.getCoordinates().getLatitude()), this.getSpeed(), this.getLane(),
+                new Timestamp(this.getTimestamp().getTime()), this.getTargetSpeed(), this.getTargetLane());
+    }
+
+    @Override
+    public String toString() {
+        return "LeadingVehicleData{" +
+                "targetSpeed=" + targetSpeed +
+                ", targetLane=" + targetLane +
+                "} " + super.toString();
+    }
 }
