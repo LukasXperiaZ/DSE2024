@@ -1,4 +1,4 @@
-package service.datafeeder;
+package dse.datafeeder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
