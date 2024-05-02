@@ -75,6 +75,29 @@ public class AutonomousVehicleSimulation {
         this.vehicleSemaphore.release();
     }
 
+    public void stayLeadingVehicle() {
+        // Does nothing as nothing has to change.
+    }
+
+    // Transform the leading vehicle into a non-leading vehicle. It will now only send normal VehicleData.
+    public void disableLeadingVehicle() {
+        try {
+            this.vehicleSemaphore.acquire();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        // Make this vehicle a non-leading vehicle.
+        this.vehicleData = new VehicleData(this.vehicleData.getVin(), this.vehicleData.getCoordinates(),
+                this.vehicleData.getSpeed(), this.vehicleData.getLane(), this.vehicleData.getTimestamp());
+
+        this.vehicleSemaphore.release();
+    }
+
+    public void stayNonLeadingVehicle() {
+        // DOes nothing as nothing has to change.
+    }
+
     // This generates the instructions used for the simulation scenario.
     private List<Instruction> generateInstructions() {
         List<Instruction> instructions = new ArrayList<>();

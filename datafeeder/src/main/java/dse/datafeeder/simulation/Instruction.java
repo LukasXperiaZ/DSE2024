@@ -38,6 +38,10 @@ public class Instruction {
         this.ticks = ticks;
     }
 
+    public Instruction deepCopy() {
+        return new Instruction(speed, lane, ticks);
+    }
+
     @Override
     public String toString() {
         return "Instruction{" +
