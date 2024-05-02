@@ -1,9 +1,12 @@
 package dse.datafeeder.simulation;
 
+/*
+ * This class represents an instruction for a car.
+ */
 public class Instruction {
     private double speed;
     private int lane;
-    private int ticks;      // For how long the instruction is valid.
+    private int ticks;      // For how long (how many ticks) the instruction is valid.
 
     public Instruction(double speed, int lane, int ticks) {
         this.speed = speed;

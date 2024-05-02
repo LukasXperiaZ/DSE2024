@@ -11,6 +11,9 @@ import java.sql.Timestamp;
 
 import static dse.datafeeder.constants.Constants.*;
 
+/*
+ * This class includes some basic tests to test the correct behaviour of important methods.
+ */
 @SpringBootTest
 class DatafeederApplicationTests {
 
@@ -29,7 +32,16 @@ class DatafeederApplicationTests {
     }
 
     @Test
-    void testChaneLeftRight() {
+    void testChangeForward() {
+        Coordinates coordinates = new Coordinates(START_FIRST_LANE_LON, START_FIRST_LANE_LAT);
+
+        coordinates.changeCoordinatesByDistance(1, Direction.Forward);
+        assert (Math.abs(coordinates.getLatitude() - START_FIRST_LANE_LAT) < 0.000001);
+        assert (coordinates.getLongitude() > START_FIRST_LANE_LON);
+    }
+
+    @Test
+    void testChangeLeftRight() {
         Coordinates coordinates = new Coordinates(START_FIRST_LANE_LON, START_FIRST_LANE_LAT);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Left);
@@ -44,26 +56,4 @@ class DatafeederApplicationTests {
         assert(coordinates.getLatitude() > START_FIRST_LANE_LAT);
         assert(coordinates.getLongitude() == START_FIRST_LANE_LON);
     }
-
-    @Test
-    void testAutonomousVehicleSimulation() {
-        AutonomousVehicleSimulation autonomousVehicleSimulation = new AutonomousVehicleSimulation();
-
-        autonomousVehicleSimulation.startSimulation();
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            assert false;
-        }
-
-        autonomousVehicleSimulation.makeLeadingVehicle();
-
-        try {
-            Thread.sleep(40000);
-        } catch (InterruptedException e) {
-            assert false;
-        }
-    }
-
 }

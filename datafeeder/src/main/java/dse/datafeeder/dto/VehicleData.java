@@ -4,6 +4,10 @@ import dse.datafeeder.exception.ValidationException;
 
 import java.sql.Timestamp;
 
+/*
+ * This class represents the data a vehicle sends to the backend.
+ * It also represents the state of the simulated vehicle.
+ */
 public class VehicleData {
 
     private String vin;     // len=17

@@ -4,6 +4,10 @@ import dse.datafeeder.exception.ValidationException;
 
 import java.sql.Timestamp;
 
+/*
+ * This class represents the data a leading vehicle sends to the backend.
+ * It also represents the state of the simulated leading vehicle.
+ */
 public class LeadingVehicleData extends VehicleData {
 
     private double targetSpeed;     // [0.0, 1000.0]

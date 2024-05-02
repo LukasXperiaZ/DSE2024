@@ -1,5 +1,8 @@
 package dse.datafeeder.constants;
 
+/*
+ * This class contains constants used by the simulation classes.
+ */
 public class Constants {
 
     public static final int EARTH_RADIUS = 6371;

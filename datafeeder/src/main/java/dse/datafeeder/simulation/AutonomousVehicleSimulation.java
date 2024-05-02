@@ -16,11 +16,20 @@ import java.util.concurrent.TimeUnit;
 
 import static dse.datafeeder.constants.Constants.*;
 
+/*
+ * This class is used for simulating an autonomous vehicle.
+ * It assumes, that the vehicle goes on a straight road in the direction of +longitude.
+ * Furthermore, steering left corresponds to -latitude and steering right to +latitude.
+ */
 public class AutonomousVehicleSimulation {
 
+    // Example vin.
+    private final String vin = "5YJ3E7EB7KF240393";
+
+    // VehicleData that is being updated every tick of the simulation.
     private VehicleData vehicleData;
 
-    // Semaphore necessary when this vehicle is made a leading vehicle.
+    // A semaphore is necessary when this vehicle is made a leading vehicle.
     private final Semaphore vehicleSemaphore = new Semaphore(1);
 
     private final List<Instruction> instructions;
@@ -29,20 +38,23 @@ public class AutonomousVehicleSimulation {
 
     private ScheduledExecutorService executor;
 
+    // Initialize the vehicle to be at a defined start point (first lane).
     public AutonomousVehicleSimulation() {
         Coordinates startPoint = new Coordinates(START_FIRST_LANE_LON, START_FIRST_LANE_LAT);
-        this.vehicleData = new VehicleData("5YJ3E7EB7KF240393", startPoint, 100.0, 1,
+        this.vehicleData = new VehicleData(vin, startPoint, 100.0, 1,
                 new Timestamp(System.currentTimeMillis()));
         this.instructions = this.generateInstructions();
         this.instructionIterator = this.instructions.iterator();
         this.currentInstruction = this.instructionIterator.next();
     }
 
+    // Start the simulation: This will generate a new executor running in a thread pool that simulates the autonomous car.
     public void startSimulation() {
         this.executor = Executors.newScheduledThreadPool(1);
         executor.scheduleAtFixedRate(simulation, 0, 100, TimeUnit.MILLISECONDS);
     }
 
+    // Transform the autonomous vehicle into a leading vehicle. It will now also send the target speed and lane.
     public void makeLeadingVehicle() {
         try {
             this.vehicleSemaphore.acquire();
@@ -58,6 +70,7 @@ public class AutonomousVehicleSimulation {
         this.vehicleSemaphore.release();
     }
 
+    // This generates the instructions used for the simulation scenario.
     private List<Instruction> generateInstructions() {
         List<Instruction> instructions = new ArrayList<>();
 
@@ -82,9 +95,11 @@ public class AutonomousVehicleSimulation {
         return instructions;
     }
 
+    // This is a runnable doing the simulation of the autonomous car.
     private final Runnable simulation = new Runnable() {
         @Override
         public void run() {
+            // Try to acquire the semaphore. If this blocks, the vehicle is currently transformed into a leading vehicle.
             try {
                 vehicleSemaphore.acquire();
             } catch (InterruptedException e) {
@@ -107,6 +122,8 @@ public class AutonomousVehicleSimulation {
 
         }
 
+        // Simulate the leading vehicle: Try to reach what the current instruction says by adjusting the speed
+        // and/or steering left or right.
         private void simulateLeadingVehicle() {
             // Get the current instruction
             if (currentInstruction.getTicks() < 1) {
@@ -147,8 +164,10 @@ public class AutonomousVehicleSimulation {
                 // The car is closest to lane 1
                 vehicleData.setLane(1);
             } else if (diffLane2 < diffLane1 && diffLane2 < diffLane3) {
+                // The car is closest to lane 2
                 vehicleData.setLane(2);
             } else {
+                // The car is closest to lane 3
                 vehicleData.setLane(3);
             }
 
