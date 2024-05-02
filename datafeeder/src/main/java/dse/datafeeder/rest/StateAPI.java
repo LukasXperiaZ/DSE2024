@@ -2,6 +2,8 @@ package dse.datafeeder.rest;
 
 import dse.datafeeder.simulation.AutonomousVehicleSimulation;
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 /*
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("state")
 public class StateAPI {
 
+    private final Logger logger = LoggerFactory.getLogger(StateAPI.class);
+
     private AutonomousVehicleSimulation autonomousVehicleSimulation;
 
     // Initialize the simulations at the start of the application.
     @PostConstruct
     public void init() {
+        logger.info("Initializing the state API");
         autonomousVehicleSimulation = new AutonomousVehicleSimulation();
         autonomousVehicleSimulation.startSimulation();
     }

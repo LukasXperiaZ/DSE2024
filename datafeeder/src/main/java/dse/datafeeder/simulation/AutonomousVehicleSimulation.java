@@ -4,6 +4,8 @@ import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.LeadingVehicleData;
 import dse.datafeeder.dto.VehicleData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -21,7 +23,10 @@ import static dse.datafeeder.constants.Constants.*;
  * It assumes, that the vehicle goes on a straight road in the direction of +longitude.
  * Furthermore, steering left corresponds to -latitude and steering right to +latitude.
  */
+
 public class AutonomousVehicleSimulation {
+
+    private final Logger logger = LoggerFactory.getLogger(AutonomousVehicleSimulation.class);
 
     // Example vin.
     private final String vin = "5YJ3E7EB7KF240393";
@@ -40,7 +45,7 @@ public class AutonomousVehicleSimulation {
 
     // Initialize the vehicle to be at a defined start point (first lane).
     public AutonomousVehicleSimulation() {
-        Coordinates startPoint = new Coordinates(START_FIRST_LANE_LON, START_FIRST_LANE_LAT);
+        Coordinates startPoint = new Coordinates(START_AUT_FIRST_LANE_LON, START_AUT_FIRST_LANE_LAT);
         this.vehicleData = new VehicleData(vin, startPoint, 100.0, 1,
                 new Timestamp(System.currentTimeMillis()));
         this.instructions = this.generateInstructions();
@@ -77,6 +82,9 @@ public class AutonomousVehicleSimulation {
         // Note that 1 tick = 100ms, thus e.g. 100 ticks = 10 seconds.
         // A minimum of 65 ticks is needed to do a lane change.
 
+        // This is the initial instruction that will be executed until the vehicle is made a leading vehicle.
+        instructions.add(new Instruction(100.0, 1, 1));
+
         // Decrease the speed.
         instructions.add(new Instruction(90.0, 1, 100));
 
@@ -108,23 +116,28 @@ public class AutonomousVehicleSimulation {
 
             if (!(vehicleData instanceof LeadingVehicleData)) {
                 // --- Vehicle is not a leading vehicle ---
-                VehicleData vehicleDataCopy = vehicleData.deepCopy();
-
-                vehicleSemaphore.release();
-
-                // send updated VehicleDataCopy
-                // TODO
-                System.out.println("Speed: " + vehicleDataCopy.getSpeed() + " Lane: " + vehicleDataCopy.getLane());
-            } else {
-                // --- Vehicle is a leading vehicle ---
-                simulateLeadingVehicle();
+                // Increase the ticks of the current instruction, so that the vehicle executes this instruction until
+                // it is made a leading vehicle.
+                currentInstruction.setTicks(currentInstruction.getTicks() + 1);
             }
 
+            simulateVehicle();
+
+            VehicleData deepCopy = vehicleData.deepCopy();
+            // Set target speed and lane to the current speed and lane.
+            LeadingVehicleData leadingVehicleData = new LeadingVehicleData(deepCopy, deepCopy.getSpeed(), deepCopy.getLane());
+
+            vehicleSemaphore.release();
+
+            // send updated LeadingVehicleDataCopy.
+            // TODO
+            logger.debug("Speed: {}, Lane: {}, Coordinates: {}", leadingVehicleData.getSpeed(),
+                    leadingVehicleData.getLane(), leadingVehicleData.getCoordinates());
         }
 
         // Simulate the leading vehicle: Try to reach what the current instruction says by adjusting the speed
         // and/or steering left or right.
-        private void simulateLeadingVehicle() {
+        private void simulateVehicle() {
             // Get the current instruction
             if (currentInstruction.getTicks() < 1) {
                 if (instructionIterator.hasNext()) {
@@ -156,7 +169,7 @@ public class AutonomousVehicleSimulation {
                 vehicleData.getCoordinates().changeCoordinatesByDistance(MOVEMENT_SIDEWAYS_PER_TICK, Direction.Right);
             }
             // Adjust the lane number
-            double diffLane1 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_FIRST_LANE_LAT);
+            double diffLane1 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_AUT_FIRST_LANE_LAT);
             double diffLane2 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_SECOND_LANE_LAT);
             double diffLane3 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_THIRD_LANE_LAT);
 
@@ -171,19 +184,10 @@ public class AutonomousVehicleSimulation {
                 vehicleData.setLane(3);
             }
 
-            LeadingVehicleData leadingVehicleDataCopy = (LeadingVehicleData) vehicleData.deepCopy();
-            // Set target speed and lane to the current speed and lane.
-            leadingVehicleDataCopy.setTargetSpeed(leadingVehicleDataCopy.getSpeed());
-            leadingVehicleDataCopy.setTargetLane(leadingVehicleDataCopy.getLane());
+            vehicleData.setTimestamp(new Timestamp(System.currentTimeMillis()));
 
             // Instruction has been executed for 1 tick. Decrease the tick
             currentInstruction.setTicks(currentInstruction.getTicks() - 1);
-
-            vehicleSemaphore.release();
-
-            // send updated LeadingVehicleDataCopy.
-            // TODO
-            System.out.println("Speed: " + leadingVehicleDataCopy.getSpeed() + " Lane: " + leadingVehicleDataCopy.getLane());
         }
     };
 

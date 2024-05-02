@@ -28,6 +28,20 @@ public class LeadingVehicleData extends VehicleData {
         this.targetLane = targetLane;
     }
 
+    public LeadingVehicleData(VehicleData vehicleData, double targetSpeed, int targetLane) {
+        super(vehicleData.getVin(), vehicleData.getCoordinates(), vehicleData.getSpeed(), vehicleData.getLane(), vehicleData.getTimestamp());
+
+        if (!this.checkSpeed(targetSpeed)) {
+            throw new ValidationException("Speed '" + targetSpeed + "' is either too low or too high!");
+        }
+        if (!this.checkLane(targetLane)) {
+            throw new ValidationException("Lane '" + targetLane + "' has to be between 1 and 3!");
+        }
+
+        this.targetSpeed = targetSpeed;
+        this.targetLane = targetLane;
+    }
+
     public double getTargetSpeed() {
         return targetSpeed;
     }

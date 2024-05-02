@@ -3,7 +3,6 @@ package dse.datafeeder;
 import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.VehicleData;
-import dse.datafeeder.simulation.AutonomousVehicleSimulation;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -33,27 +32,36 @@ class DatafeederApplicationTests {
 
     @Test
     void testChangeForward() {
-        Coordinates coordinates = new Coordinates(START_FIRST_LANE_LON, START_FIRST_LANE_LAT);
+        Coordinates coordinates = new Coordinates(START_AUT_FIRST_LANE_LON, START_AUT_FIRST_LANE_LAT);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Forward);
-        assert (Math.abs(coordinates.getLatitude() - START_FIRST_LANE_LAT) < 0.000001);
-        assert (coordinates.getLongitude() > START_FIRST_LANE_LON);
+        assert (Math.abs(coordinates.getLatitude() - START_AUT_FIRST_LANE_LAT) < 0.000001);
+        assert (coordinates.getLongitude() > START_AUT_FIRST_LANE_LON);
     }
 
     @Test
     void testChangeLeftRight() {
-        Coordinates coordinates = new Coordinates(START_FIRST_LANE_LON, START_FIRST_LANE_LAT);
+        Coordinates coordinates = new Coordinates(START_AUT_FIRST_LANE_LON, START_AUT_FIRST_LANE_LAT);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Left);
-        assert(coordinates.getLatitude() < START_FIRST_LANE_LAT);
-        assert(coordinates.getLongitude() == START_FIRST_LANE_LON);
+        assert(coordinates.getLatitude() < START_AUT_FIRST_LANE_LAT);
+        assert(coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Right);
-        assert(coordinates.getLatitude() - START_FIRST_LANE_LAT < 0.000001);
-        assert(coordinates.getLongitude() == START_FIRST_LANE_LON);
+        assert(coordinates.getLatitude() - START_AUT_FIRST_LANE_LAT < 0.000001);
+        assert(coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Right);
-        assert(coordinates.getLatitude() > START_FIRST_LANE_LAT);
-        assert(coordinates.getLongitude() == START_FIRST_LANE_LON);
+        assert(coordinates.getLatitude() > START_AUT_FIRST_LANE_LAT);
+        assert(coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
+    }
+
+    @Test
+    void testDistanceBetweenVehicles() {
+        Coordinates startAutVehicle = new Coordinates(START_AUT_FIRST_LANE_LON, START_AUT_FIRST_LANE_LAT);
+        Coordinates startNonVehicle = new Coordinates(START_NON_FIRST_LANE_LON, START_NON_FIRST_LANE_LAT);
+
+        double distance = startNonVehicle.calculateDistanceTo(startAutVehicle);
+        assert(distance > 90);
     }
 }
