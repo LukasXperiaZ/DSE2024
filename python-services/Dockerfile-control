@@ -1,0 +1,38 @@
+FROM python:3.11-slim
+# docker build -t control_service .
+
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Install system dependencies
+#RUN apt-get update \
+#    && apt-get install -y --no-install-recommends \
+#        build-essential \
+#        libpq-dev
+
+# Install Poetry
+RUN pip install poetry
+
+# Copy only the dependencies file to optimize caching
+COPY pyproject.toml poetry.lock ./
+
+# Install project dependencies
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-dev --no-interaction --no-ansi
+
+COPY python_services/__init__.py python_services/__init__.py
+# Copy the rest of the application code
+COPY python_services/common python_services/common
+COPY python_services/control_service python_services/control_service
+
+# Expose the port the app runs on
+EXPOSE 8002
+
+WORKDIR /app
+# Run the application
+CMD ["python", "-m", "python_services.control_service.main"]
