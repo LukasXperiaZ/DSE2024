@@ -1,8 +1,8 @@
 package dse.beachcombservice.mongodb.models;
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.List;
 
 @Document(collection = "vehicles")
 //@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
@@ -11,4 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 //        @JsonSubTypes.Type(value = LeadingVehicleModel.class, name = "LeadingVehicleModel"),
 //})
 public interface IVehicleModel {
+    String getVin();
+
+    List<Double> getLocation();
 }
