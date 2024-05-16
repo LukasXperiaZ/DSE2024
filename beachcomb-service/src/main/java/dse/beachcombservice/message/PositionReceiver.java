@@ -1,13 +1,28 @@
 package dse.beachcombservice.message;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import dse.beachcombservice.BeachcombService;
+import dse.beachcombservice.VehicleDTO;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RabbitListener(queues = "Q")
 public class PositionReceiver {
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private BeachcombService beachcombService;
+
     @RabbitHandler
     public void receiveMessage(String message) {
-        System.out.println("Received <" + message + ">");
+        try {
+            var vehicle = objectMapper.readValue(message, VehicleDTO.class);
+            beachcombService.insert(vehicle);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
