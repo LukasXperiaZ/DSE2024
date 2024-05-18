@@ -4,6 +4,8 @@ import dse.beachcombservice.mongodb.VehicleRepository;
 import dse.beachcombservice.mongodb.models.IVehicleModel;
 import dse.beachcombservice.mongodb.models.LeadingVehicleModel;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Component;
@@ -19,15 +21,19 @@ public class BeachcombService {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
+    Logger logger = LoggerFactory.getLogger(BeachcombService.class);
+
     @Autowired
     private VehicleRepository vehicleRepository;
 
     public void insert(VehicleDTO vehicleDTO) {
+        logger.trace("Inserting vehicle into MongoDB!");
         LeadingVehicleModel vehicleModel = modelMapper.map(vehicleDTO, LeadingVehicleModel.class);
         vehicleRepository.insert(vehicleModel);
     }
 
     public Map<String, List<String>> getFollowMeCandidates() {
+        logger.trace("Retrieving FollowMeCandidates from MongoDB!");
         //TODO: Maybe change this if we consider storing all data and not only the newest location of a vehicle
         var allVehicles = vehicleRepository.findByVinIsNotNull();
         Map<String, List<String>> followMeCandidates = new HashMap<>();

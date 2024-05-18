@@ -87,4 +87,17 @@ public class VehicleDTO {
     public void setTargetLane(Integer targetLane) {
         this.targetLane = targetLane;
     }
+
+    @Override
+    public String toString() {
+        return "VehicleDTO{" +
+                "vin='" + vin + '\'' +
+                ", location=" + location +
+                ", speed=" + speed +
+                ", lane=" + lane +
+                ", timestamp=" + timestamp +
+                ", targetSpeed=" + targetSpeed +
+                ", targetLane=" + targetLane +
+                '}';
+    }
 }

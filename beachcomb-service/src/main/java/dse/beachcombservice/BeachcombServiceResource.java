@@ -2,6 +2,9 @@ package dse.beachcombservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import dse.beachcombservice.mongodb.VehicleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,24 +21,25 @@ import java.util.Map;
 @RestController
 public class BeachcombServiceResource {
 
+    Logger logger = LoggerFactory.getLogger(BeachcombServiceResource.class);
     @Autowired
     private BeachcombService beachcombService;
-
     @Autowired
     private RabbitTemplate rabbitTemplate;
-
     private ObjectMapper objectMapper = new ObjectMapper();
+    @Autowired
+    private VehicleRepository vehicleRepository;
 
     @PostMapping("/insert")
     public String insert(@Valid @RequestBody VehicleDTO vehicleModel) {
-        System.out.println("Inserting");
+        logger.info("Inserting vehicle: " + vehicleModel);
         beachcombService.insert(vehicleModel);
         return "Inserted!";
     }
 
     @GetMapping("/follow_me")
     public Map<String, List<String>> followMe() {
-        System.out.println("Follow me");
+        logger.info("Returning FollowMe-Candidates!");
         return beachcombService.getFollowMeCandidates();
     }
 
