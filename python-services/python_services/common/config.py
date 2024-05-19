@@ -10,3 +10,7 @@ RABBITMQ_PASS = os.environ.get("RABBITMQ_PASS", "guest")
 INVENTORY_SERVICE_URL = os.environ.get("INVENTORY_SERVICE_URL", "http://localhost:8001")
 CONTROL_SERVICE_URL = os.environ.get("CONTROL_SERVICE_URL", "http://localhost:8002")
 BEACHCOMB_SERVICE_URL = os.environ.get("BEACHCOMB_SERVICE_URL", "http://localhost:8003")
+
+
+FOLLOWME_END_TIME = os.environ.get("FOLLOWME_END_TIME", 30)
+FOLLOWME_SPEED_TOLERANCE = os.environ.get("FOLLOWME_SPEED_TOLERANCE", 5)
