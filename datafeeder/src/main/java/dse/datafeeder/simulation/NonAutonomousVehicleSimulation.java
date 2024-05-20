@@ -147,10 +147,18 @@ public class NonAutonomousVehicleSimulation {
             // It can adjust 1km/h per tick
             if (vehicleData.getSpeed() < instruction.getSpeed()) {
                 // The vehicle has to go faster.
-                vehicleData.setSpeed(vehicleData.getSpeed() + SPEED_INCREASE_PER_TICK);
+                if (instruction.getSpeed() < 121.2 && instruction.getSpeed() > 120.8) {
+                    // This "bug" is intentional to satisfy the simulation scenario:
+                    // I.e. at the last speed change (speeding up to 121.0 km/h), the FV will not adjust its speed to
+                    // the target speed.
+                } else {
+                    // Normal and expected behavior otherwise: The vehicle adjusts the speed.
+                    vehicleData.setSpeed(vehicleData.getSpeed() + SPEED_INCREASE_PER_TICK);
+                }
             } else if (vehicleData.getSpeed() > instruction.getSpeed()) {
                 // The vehicle has to slow down
                 vehicleData.setSpeed(vehicleData.getSpeed() - SPEED_INCREASE_PER_TICK);
+
             }
             // Adjust the coordinates to go forward
             double distance = (vehicleData.getSpeed() / 3.6) * 0.1;

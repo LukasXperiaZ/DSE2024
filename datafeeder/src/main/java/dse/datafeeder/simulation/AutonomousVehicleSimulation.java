@@ -121,7 +121,10 @@ public class AutonomousVehicleSimulation {
         instructions.add(new Instruction(125.0, 2, 70));
 
         // Change to lane 1.
-        instructions.add(new Instruction(125.0, 1, 65));
+        instructions.add(new Instruction(110.0, 1, 65));
+
+        // Change to lane 1.
+        instructions.add(new Instruction(121.0, 1, 85));
 
         return instructions;
     }
@@ -154,8 +157,8 @@ public class AutonomousVehicleSimulation {
 
             // send updated LeadingVehicleDataCopy.
             // TODO
-            logger.debug("Speed: {}, Lane: {}, Coordinates: {}", leadingVehicleData.getSpeed(),
-                    leadingVehicleData.getLane(), leadingVehicleData.getCoordinates());
+            //logger.debug("Speed: {}, Lane: {}, Coordinates: {}", leadingVehicleData.getSpeed(),
+            //        leadingVehicleData.getLane(), leadingVehicleData.getCoordinates());
         }
 
         // Simulate the leading vehicle: Try to reach what the current instruction says by adjusting the speed
