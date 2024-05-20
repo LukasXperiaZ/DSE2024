@@ -5,9 +5,12 @@ import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.FVState;
 import dse.datafeeder.dto.RegisterCar;
 import dse.datafeeder.dto.VehicleData;
+import dse.datafeeder.rabbitMq.RabbitMq;
 import dse.datafeeder.rest.InventoryClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.Timestamp;
 import java.util.concurrent.Executors;
@@ -42,6 +45,8 @@ public class NonAutonomousVehicleSimulation {
     private final Semaphore previousInstructionSemaphore = new Semaphore(1);
 
     private ScheduledExecutorService executor;
+
+    private final RabbitMq rabbitMq = new RabbitMq();
 
     public NonAutonomousVehicleSimulation() {
         Coordinates startPoint = new Coordinates(START_NON_FIRST_LANE_LON, START_NON_FIRST_LANE_LAT);
@@ -137,9 +142,7 @@ public class NonAutonomousVehicleSimulation {
             }
 
             // Send updated VehicleDataCopy
-            // TODO
-            logger.debug("Speed: {}, Lane: {}, Coordinates: {}", vehicleDataCopy.getSpeed(),
-                    vehicleDataCopy.getLane(), vehicleDataCopy.getCoordinates());
+            rabbitMq.send(vehicleDataCopy);
         }
 
         // Simulate the following vehicle: Try to reach what the instruction says by adjusting the speed

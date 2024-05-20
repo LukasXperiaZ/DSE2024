@@ -11,22 +11,23 @@ public class InventoryClient {
 
     private final Logger logger = LoggerFactory.getLogger(InventoryClient.class);
 
-    private final String baseUrl = "https://localhost:8001";
+    private final String baseUrl = "http://localhost:8001/inventory";
 
-    private final RestClient client = RestClient.builder()
-            .baseUrl(baseUrl)
-            .build();
+    private final RestClient client = RestClient.create();
 
     public void registerCar(RegisterCar car) {
         logger.info("Register car: {}", car);
         String result = client.post()
-                .uri("/register")
+                .uri(baseUrl + "/register")
                 .body(car)
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange((request, response) -> {
                    if (response.getStatusCode().is4xxClientError()) {
                        throw new NotFoundException("Path "+ baseUrl + "'/register' not found!");
-                   } else {
+                   } else if (response.getStatusCode().isError()) {
+                       throw new RuntimeException(response.toString());
+                   }
+                   else {
                        return response.toString();
                    }
                 });

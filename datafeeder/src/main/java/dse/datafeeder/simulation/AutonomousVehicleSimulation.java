@@ -5,6 +5,7 @@ import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.LeadingVehicleData;
 import dse.datafeeder.dto.RegisterCar;
 import dse.datafeeder.dto.VehicleData;
+import dse.datafeeder.rabbitMq.RabbitMq;
 import dse.datafeeder.rest.InventoryClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,8 @@ public class AutonomousVehicleSimulation {
     private Instruction currentInstruction;
 
     private ScheduledExecutorService executor;
+
+    private final RabbitMq rabbitMq = new RabbitMq();
 
     // Initialize the vehicle to be at a defined start point (first lane).
     public AutonomousVehicleSimulation() {
@@ -158,9 +161,7 @@ public class AutonomousVehicleSimulation {
             vehicleSemaphore.release();
 
             // send updated LeadingVehicleDataCopy.
-            // TODO
-            logger.debug("Speed: {}, Lane: {}, Coordinates: {}", leadingVehicleData.getSpeed(),
-                    leadingVehicleData.getLane(), leadingVehicleData.getCoordinates());
+            rabbitMq.send(leadingVehicleData);
         }
 
         // Simulate the leading vehicle: Try to reach what the current instruction says by adjusting the speed
