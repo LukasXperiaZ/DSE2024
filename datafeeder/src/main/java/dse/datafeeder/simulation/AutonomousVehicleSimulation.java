@@ -3,7 +3,9 @@ package dse.datafeeder.simulation;
 import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.LeadingVehicleData;
+import dse.datafeeder.dto.RegisterCar;
 import dse.datafeeder.dto.VehicleData;
+import dse.datafeeder.rest.InventoryClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -218,4 +220,9 @@ public class AutonomousVehicleSimulation {
     };
 
 
+    public void registerVehicle() {
+        RegisterCar autonomousCar = new RegisterCar("Tesla", "Model 3", this.vin, true);
+        InventoryClient inventoryClient = new InventoryClient();
+        inventoryClient.registerCar(autonomousCar);
+    }
 }

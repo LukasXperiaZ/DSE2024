@@ -4,7 +4,6 @@ import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.VehicleData;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Timestamp;
 
@@ -13,7 +12,6 @@ import static dse.datafeeder.constants.Constants.*;
 /*
  * This class includes some basic tests to test the correct behaviour of important methods.
  */
-@SpringBootTest
 class DatafeederApplicationTests {
 
     @Test

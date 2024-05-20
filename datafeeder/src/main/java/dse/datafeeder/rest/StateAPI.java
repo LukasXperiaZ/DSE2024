@@ -30,9 +30,11 @@ public class StateAPI {
     public void init() {
         logger.info("Initializing the state API");
         autonomousVehicleSimulation = new AutonomousVehicleSimulation();
+        autonomousVehicleSimulation.registerVehicle();
         autonomousVehicleSimulation.startSimulation();
 
         nonAutonomousVehicleSimulation = new NonAutonomousVehicleSimulation();
+        nonAutonomousVehicleSimulation.registerVehicle();
         nonAutonomousVehicleSimulation.startSimulation();
     }
 
