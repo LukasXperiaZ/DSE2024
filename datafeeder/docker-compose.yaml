@@ -3,4 +3,4 @@ services:
   datafeeder:
     build: .
     ports:
-      - "8081:8081"
+      - "8010:8010"

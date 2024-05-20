@@ -157,8 +157,8 @@ public class AutonomousVehicleSimulation {
 
             // send updated LeadingVehicleDataCopy.
             // TODO
-            //logger.debug("Speed: {}, Lane: {}, Coordinates: {}", leadingVehicleData.getSpeed(),
-            //        leadingVehicleData.getLane(), leadingVehicleData.getCoordinates());
+            logger.debug("Speed: {}, Lane: {}, Coordinates: {}", leadingVehicleData.getSpeed(),
+                    leadingVehicleData.getLane(), leadingVehicleData.getCoordinates());
         }
 
         // Simulate the leading vehicle: Try to reach what the current instruction says by adjusting the speed
