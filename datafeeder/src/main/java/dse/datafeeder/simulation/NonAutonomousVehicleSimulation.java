@@ -3,9 +3,14 @@ package dse.datafeeder.simulation;
 import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.FVState;
+import dse.datafeeder.dto.RegisterCar;
 import dse.datafeeder.dto.VehicleData;
+import dse.datafeeder.rabbitMq.RabbitMq;
+import dse.datafeeder.rest.InventoryClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.Timestamp;
 import java.util.concurrent.Executors;
@@ -40,6 +45,8 @@ public class NonAutonomousVehicleSimulation {
     private final Semaphore previousInstructionSemaphore = new Semaphore(1);
 
     private ScheduledExecutorService executor;
+
+    private final RabbitMq rabbitMq = new RabbitMq();
 
     public NonAutonomousVehicleSimulation() {
         Coordinates startPoint = new Coordinates(START_NON_FIRST_LANE_LON, START_NON_FIRST_LANE_LAT);
@@ -135,9 +142,7 @@ public class NonAutonomousVehicleSimulation {
             }
 
             // Send updated VehicleDataCopy
-            // TODO
-            logger.debug("Speed: {}, Lane: {}, Coordinates: {}", vehicleDataCopy.getSpeed(),
-                    vehicleDataCopy.getLane(), vehicleDataCopy.getCoordinates());
+            rabbitMq.send(vehicleDataCopy);
         }
 
         // Simulate the following vehicle: Try to reach what the instruction says by adjusting the speed
@@ -147,10 +152,18 @@ public class NonAutonomousVehicleSimulation {
             // It can adjust 1km/h per tick
             if (vehicleData.getSpeed() < instruction.getSpeed()) {
                 // The vehicle has to go faster.
-                vehicleData.setSpeed(vehicleData.getSpeed() + SPEED_INCREASE_PER_TICK);
+                if (instruction.getSpeed() < 121.2 && instruction.getSpeed() > 120.8) {
+                    // This "bug" is intentional to satisfy the simulation scenario:
+                    // I.e. at the last speed change (speeding up to 121.0 km/h), the FV will not adjust its speed to
+                    // the target speed.
+                } else {
+                    // Normal and expected behavior otherwise: The vehicle adjusts the speed.
+                    vehicleData.setSpeed(vehicleData.getSpeed() + SPEED_INCREASE_PER_TICK);
+                }
             } else if (vehicleData.getSpeed() > instruction.getSpeed()) {
                 // The vehicle has to slow down
                 vehicleData.setSpeed(vehicleData.getSpeed() - SPEED_INCREASE_PER_TICK);
+
             }
             // Adjust the coordinates to go forward
             double distance = (vehicleData.getSpeed() / 3.6) * 0.1;
@@ -185,4 +198,10 @@ public class NonAutonomousVehicleSimulation {
             vehicleData.setTimestamp(new Timestamp(System.currentTimeMillis()));
         }
     };
+
+    public void registerVehicle() {
+        RegisterCar nonAutonomousCar = new RegisterCar("Tesla", "Model Y", this.vin, false);
+        InventoryClient inventoryClient = new InventoryClient();
+        inventoryClient.registerCar(nonAutonomousCar);
+    }
 }

@@ -3,7 +3,10 @@ package dse.datafeeder.simulation;
 import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.LeadingVehicleData;
+import dse.datafeeder.dto.RegisterCar;
 import dse.datafeeder.dto.VehicleData;
+import dse.datafeeder.rabbitMq.RabbitMq;
+import dse.datafeeder.rest.InventoryClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +45,8 @@ public class AutonomousVehicleSimulation {
     private Instruction currentInstruction;
 
     private ScheduledExecutorService executor;
+
+    private final RabbitMq rabbitMq = new RabbitMq();
 
     // Initialize the vehicle to be at a defined start point (first lane).
     public AutonomousVehicleSimulation() {
@@ -121,7 +126,10 @@ public class AutonomousVehicleSimulation {
         instructions.add(new Instruction(125.0, 2, 70));
 
         // Change to lane 1.
-        instructions.add(new Instruction(125.0, 1, 65));
+        instructions.add(new Instruction(110.0, 1, 65));
+
+        // Change to lane 1.
+        instructions.add(new Instruction(121.0, 1, 85));
 
         return instructions;
     }
@@ -153,9 +161,7 @@ public class AutonomousVehicleSimulation {
             vehicleSemaphore.release();
 
             // send updated LeadingVehicleDataCopy.
-            // TODO
-            logger.debug("Speed: {}, Lane: {}, Coordinates: {}", leadingVehicleData.getSpeed(),
-                    leadingVehicleData.getLane(), leadingVehicleData.getCoordinates());
+            rabbitMq.send(leadingVehicleData);
         }
 
         // Simulate the leading vehicle: Try to reach what the current instruction says by adjusting the speed
@@ -215,4 +221,9 @@ public class AutonomousVehicleSimulation {
     };
 
 
+    public void registerVehicle() {
+        RegisterCar autonomousCar = new RegisterCar("Tesla", "Model 3", this.vin, true);
+        InventoryClient inventoryClient = new InventoryClient();
+        inventoryClient.registerCar(autonomousCar);
+    }
 }
