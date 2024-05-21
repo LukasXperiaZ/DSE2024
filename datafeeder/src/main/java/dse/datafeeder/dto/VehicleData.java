@@ -1,8 +1,10 @@
 package dse.datafeeder.dto;
 
-import dse.datafeeder.exception.ValidationException;
-
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
+
 
 /*
  * This class represents the data a vehicle sends to the backend.
@@ -10,23 +12,24 @@ import java.sql.Timestamp;
  */
 public class VehicleData {
 
+    @NotBlank(message = "VIN is mandatory")
     private String vin;     // len=17
+
+    @NotBlank(message = "coordinates are mandatory")
     private Coordinates coordinates;
+
+    @NotBlank(message = "speed is mandatory")
     private double speed;   // [0.0, 1000.0], in km/h
+
+    @NotBlank(message = "lane is mandatory")
+    @Min(value = 1, message = "lane must be greater or equal than 1")
+    @Max(value = 3, message = "lane must be smaller or equal than 3")
     private int lane;       // [1, 3]
+
+    @NotBlank
     private Timestamp timestamp;
 
     public VehicleData(String vin, Coordinates coordinates, double speed, int lane, Timestamp timestamp) {
-        if (!checkVin(vin)) {
-            throw new ValidationException("VIN '" + vin + "' does not conform to its format!");
-        }
-        if (!checkSpeed(speed)) {
-            throw new ValidationException("Speed '" + speed + "' is either too low or too high!");
-        }
-        if (!checkLane(lane)) {
-            throw new ValidationException("Lane '" + lane + "' has to be between 1 and 3!");
-        }
-
         this.vin = vin;
         this.coordinates = coordinates;
         this.speed = speed;
@@ -39,9 +42,6 @@ public class VehicleData {
     }
 
     public void setVin(String vin) {
-        if (!checkVin(vin)) {
-            throw new ValidationException("VIN '" + vin + "' does not conform to its format!");
-        }
         this.vin = vin;
     }
 
@@ -58,9 +58,6 @@ public class VehicleData {
     }
 
     public void setSpeed(double speed) {
-        if (!checkSpeed(speed)) {
-            throw new ValidationException("Speed '" + speed + "' is either too low or too high!");
-        }
         this.speed = speed;
     }
 
@@ -69,9 +66,6 @@ public class VehicleData {
     }
 
     public void setLane(int lane) {
-        if (!checkLane(lane)) {
-            throw new ValidationException("Lane '" + lane + "' has to be between 1 and 3!");
-        }
         this.lane = lane;
     }
 
@@ -87,18 +81,6 @@ public class VehicleData {
         return new VehicleData(this.getVin(), new Coordinates(this.getCoordinates().getLongitude(),
                 this.getCoordinates().getLatitude()), this.getSpeed(), this.getLane(),
                 new Timestamp(this.getTimestamp().getTime()));
-    }
-
-    private boolean checkVin(String vin) {
-        return vin != null && vin.length() == 17 && vin.matches("^(?=.*[0-9])(?=.*[A-z])[0-9A-z-]{17}$");
-    }
-
-    protected boolean checkSpeed(double speed) {
-        return speed >= 0.0 && speed <= 1000.0;
-    }
-
-    protected boolean checkLane(int lane) {
-        return lane >= 1 && lane <= 3;
     }
 
     @Override
