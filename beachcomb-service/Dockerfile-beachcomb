@@ -1,0 +1,25 @@
+FROM openjdk:17-jdk-slim AS build
+
+WORKDIR /app
+
+# Copy the Maven wrapper files into the container
+COPY mvnw .
+COPY mvnw.cmd .
+COPY .mvn .mvn
+
+COPY pom.xml .
+COPY src src
+
+RUN ./mvnw clean package -DskipTests
+
+# Second stage: Use an official OpenJDK runtime image
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose the port the application runs on
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
