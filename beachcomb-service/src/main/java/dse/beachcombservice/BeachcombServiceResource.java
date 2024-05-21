@@ -41,7 +41,7 @@ public class BeachcombServiceResource {
     }
 
     @GetMapping("/{vin}")
-    public VehicleLocation getVehicleByVin(@PathVariable String vin) {
+    public VehicleLocationDTO getVehicleByVin(@PathVariable String vin) {
         logger.info("Returning vehicle with vin: " + vin);
         return beachcombService.getVehicleLocationByVin(vin);
     }
