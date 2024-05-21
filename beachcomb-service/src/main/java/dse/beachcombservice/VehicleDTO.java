@@ -3,7 +3,6 @@ package dse.beachcombservice;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +11,7 @@ public class VehicleDTO {
     private String vin;
 
     @NotBlank(message = "Location is mandatory")
-    private List<Double> location;
+    private Coordinates location;
 
     @NotBlank(message = "Speed is mandatory")
     private Float speed;
@@ -40,11 +39,11 @@ public class VehicleDTO {
         this.vin = vin;
     }
 
-    public List<Double> getLocation() {
+    public Coordinates getLocation() {
         return location;
     }
 
-    public void setLocation(List<Double> location) {
+    public void setLocation(Coordinates location) {
         this.location = location;
     }
 

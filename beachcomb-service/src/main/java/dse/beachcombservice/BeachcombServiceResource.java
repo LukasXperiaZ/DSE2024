@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class BeachcombServiceResource {
     public void test() {
         VehicleDTO vehicleDTO = new VehicleDTO();
         vehicleDTO.setVin("123");
-        vehicleDTO.setLocation(Arrays.asList(1.0, 2.0));
+        vehicleDTO.setLocation(new Coordinates(1.0, 2.0));
         vehicleDTO.setSpeed(10.0f);
         vehicleDTO.setLane(1);
         vehicleDTO.setTimestamp(new Date());
