@@ -34,6 +34,21 @@ services:
       retries: 5
       start_period: 10s
 
+  beachcomb_service:
+    build:
+      context: ./beachcomb-service
+      dockerfile: Dockerfile-beachcomb
+    container_name: "beachcomb_service"
+    ports:
+      - 8000:8080
+    depends_on:
+        mongo:
+            condition: service_started
+        rabbitmq:
+            condition: service_healthy
+    environment:
+      RABBITMQ_HOST: rabbitmq
+      MONGO_URI: "mongodb://root:example@mongo:27017"
 
   control_service:
     build:
