@@ -1,8 +1,8 @@
 export class Car {
-  private oem: string
-  private model: string
-  private vin: string
-  private is_self_driving: boolean
+  oem: string
+  model: string
+  vin: string
+  is_self_driving: boolean
 
   constructor(oem: string, model: string, vin: string, is_self_driving: boolean) {
     this.oem = oem;
