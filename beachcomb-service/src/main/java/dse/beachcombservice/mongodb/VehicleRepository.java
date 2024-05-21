@@ -15,5 +15,7 @@ public interface VehicleRepository extends MongoRepository<IVehicleModel, String
     @Query("{'vin': {$ne: ?0}, 'location': {$near: {$geometry: {type: 'Point', coordinates: [?1, ?2]}, $maxDistance: ?3}}}")
     List<LeadingVehicleModel> findByLocationNear(String vin, double longitude, double latitude, double maxDistance);
 
-    List<VehicleLocation> findByVinIsNotNull();
+    List<VehicleLocation> findFirstByVinIsNotNullOrderByTimestampDesc();
+
+    List<VehicleLocation> findFirstByVinOrderByTimestampDesc(String vin);
 }

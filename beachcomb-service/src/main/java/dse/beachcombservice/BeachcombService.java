@@ -3,6 +3,7 @@ package dse.beachcombservice;
 import dse.beachcombservice.mongodb.VehicleRepository;
 import dse.beachcombservice.mongodb.models.IVehicleModel;
 import dse.beachcombservice.mongodb.models.LeadingVehicleModel;
+import dse.beachcombservice.mongodb.models.VehicleLocation;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ public class BeachcombService {
     public Map<String, List<String>> getFollowMeCandidates() {
         logger.trace("Retrieving FollowMeCandidates from MongoDB!");
         //TODO: Maybe change this if we consider storing all data and not only the newest location of a vehicle
-        var allVehicles = vehicleRepository.findByVinIsNotNull();
+        var allVehicles = vehicleRepository.findFirstByVinIsNotNullOrderByTimestampDesc();
         Map<String, List<String>> followMeCandidates = new HashMap<>();
         for (IVehicleModel vehicle : allVehicles) {
             Point location = new Point(vehicle.getLocation().get(0), vehicle.getLocation().get(1));
@@ -43,5 +44,11 @@ public class BeachcombService {
             followMeCandidates.put(vehicle.getVin(), byLocationNear.stream().map(IVehicleModel::getVin).toList());
         }
         return followMeCandidates;
+    }
+
+    public VehicleLocation getVehicleLocationByVin(String vin) {
+        logger.trace("Retrieving vehicle location by vin!");
+        var vehicleLocation = vehicleRepository.findFirstByVinOrderByTimestampDesc(vin);
+        return vehicleLocation.get(0);
     }
 }
