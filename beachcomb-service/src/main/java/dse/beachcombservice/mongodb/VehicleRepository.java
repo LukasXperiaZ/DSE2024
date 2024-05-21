@@ -17,5 +17,5 @@ public interface VehicleRepository extends MongoRepository<IVehicleModel, String
 
     List<VehicleLocation> findFirstByVinIsNotNullOrderByTimestampDesc();
 
-    List<VehicleLocation> findFirstByVinOrderByTimestampDesc(String vin);
+    VehicleLocation findFirstByVinOrderByTimestampDesc(String vin);
 }

@@ -1,5 +1,6 @@
 package dse.beachcombservice;
 
+import dse.beachcombservice.exceptions.VehicleNotFoundException;
 import dse.beachcombservice.mongodb.VehicleRepository;
 import dse.beachcombservice.mongodb.models.IVehicleModel;
 import dse.beachcombservice.mongodb.models.LeadingVehicleModel;
@@ -49,7 +50,7 @@ public class BeachcombService {
     public VehicleLocation getVehicleLocationByVin(String vin) {
         logger.trace("Retrieving vehicle location by vin!");
         var vehicleLocation = vehicleRepository.findFirstByVinOrderByTimestampDesc(vin);
-        return vehicleLocation.get(0);
         if (vehicleLocation == null) throw new VehicleNotFoundException(vin);
+        return vehicleLocation;
     }
 }
