@@ -50,5 +50,6 @@ public class BeachcombService {
         logger.trace("Retrieving vehicle location by vin!");
         var vehicleLocation = vehicleRepository.findFirstByVinOrderByTimestampDesc(vin);
         return vehicleLocation.get(0);
+        if (vehicleLocation == null) throw new VehicleNotFoundException(vin);
     }
 }
