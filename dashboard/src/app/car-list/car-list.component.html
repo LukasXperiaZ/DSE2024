@@ -1,5 +1,5 @@
-<mat-grid-list cols="4">
-  <mat-grid-tile colspan="1" class="lightblue">
+<mat-grid-list cols="9" rowHeight="800px" gutterSize="10px">
+  <mat-grid-tile colspan="2" class="lightblue">
     <button mat-icon-button color="primary" aria-label="reload" (click)="getCars()">
       <mat-icon>refresh</mat-icon>
     </button>
@@ -7,7 +7,7 @@
     <mat-list #carsList *ngIf="cars">
       @for (car of cars; track car) {
         <mat-list-item>
-          <span matListItemTitle>{{car.oem}} {{car.model}} ({{car.vin}})</span>
+          <span matListItemTitle>{{ car.oem }} {{ car.model }} ({{ car.vin }})</span>
           <span *ngIf="car.is_self_driving" matListItemLine>Self-driving car</span>
         </mat-list-item>
         <mat-divider></mat-divider>
@@ -15,7 +15,11 @@
     </mat-list>
   </mat-grid-tile>
 
+  <mat-grid-tile colspan="2" class="meadow"></mat-grid-tile>
+
   <mat-grid-tile colspan="3">
-    TODO visualization of cars.
+    <app-car-svg class="height800 width620" [vehicleData]="getVehicleData()"></app-car-svg>
   </mat-grid-tile>
+
+  <mat-grid-tile colspan="2" class="meadow"></mat-grid-tile>
 </mat-grid-list>

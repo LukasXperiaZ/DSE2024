@@ -1,0 +1,26 @@
+<svg width="100%" height="100%">
+  <g>
+    <rect x="0" y="0" width="620" height="800" [attr.fill]="road"/>
+    <rect x="200" y="0" width="10" height="800" [attr.fill]="white"/>
+    <rect x="410" y="0" width="10" height="800" [attr.fill]="white"/>
+  </g>
+  @for (vehicle of vehicleData; track vehicle) {
+    <g>
+      <rect
+        [attr.x]="latitudeToX(vehicle.coordinates.latitude)"
+        [attr.y]="longitudeToY(vehicle.coordinates.longitude)"
+        width="50"
+        height="80"
+        [attr.fill]="car"
+      />
+      <text
+        [attr.x]="latitudeToX(vehicle.coordinates.latitude) + 7"
+        [attr.y]="longitudeToY(vehicle.coordinates.longitude) + 45"
+        fill="white"
+      >
+        {{vehicle.vin.substring(0,4)}}
+      </text>
+    </g>
+  }
+
+</svg>

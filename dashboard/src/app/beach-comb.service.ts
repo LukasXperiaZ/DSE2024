@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BeachCombService {
 
-  constructor() { }
+  url: string = "http://localhost:800___TODO___";
+
+  constructor(private http: HttpClient) { }
+
+  getVehicleData() {
+    // TODO
+  }
 }
