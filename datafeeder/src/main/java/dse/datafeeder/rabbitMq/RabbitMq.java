@@ -26,7 +26,7 @@ public class RabbitMq {
 
     public void send(VehicleData vehicleData) {
         logger.debug("Sending vehicle data: {}", vehicleData);
-        rabbitTemplate.convertAndSend(exchange, vehicleData);
+        rabbitTemplate.convertAndSend(exchange, "", vehicleData);
     }
 
 }

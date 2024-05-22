@@ -45,7 +45,7 @@ public class BeachcombService {
     public void insert(VehicleDTO vehicleDTO) {
         logger.trace("Inserting vehicle into MongoDB!");
         LeadingVehicleModel vehicleModel = modelMapper.map(vehicleDTO, LeadingVehicleModel.class);
-        vehicleModel.setLocation(List.of(vehicleDTO.getLocation().getLongitude(), vehicleDTO.getLocation().getLatitude()));
+        vehicleModel.setLocation(List.of(vehicleDTO.getCoordinates().getLongitude(), vehicleDTO.getCoordinates().getLatitude()));
         vehicleRepository.insert(vehicleModel);
     }
 

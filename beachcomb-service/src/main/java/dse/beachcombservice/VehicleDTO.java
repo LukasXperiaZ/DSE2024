@@ -4,14 +4,13 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
 
 public class VehicleDTO {
     @NotBlank(message = "VIN is mandatory")
     private String vin;
 
     @NotBlank(message = "Location is mandatory")
-    private Coordinates location;
+    private Coordinates coordinates;
 
     @NotBlank(message = "Speed is mandatory")
     private Float speed;
@@ -39,12 +38,12 @@ public class VehicleDTO {
         this.vin = vin;
     }
 
-    public Coordinates getLocation() {
-        return location;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setLocation(Coordinates location) {
-        this.location = location;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public Float getSpeed() {
@@ -91,7 +90,7 @@ public class VehicleDTO {
     public String toString() {
         return "VehicleDTO{" +
                 "vin='" + vin + '\'' +
-                ", location=" + location +
+                ", location=" + coordinates +
                 ", speed=" + speed +
                 ", lane=" + lane +
                 ", timestamp=" + timestamp +

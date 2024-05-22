@@ -57,7 +57,7 @@ public class BeachcombServiceResource {
     public void test() {
         VehicleDTO vehicleDTO = new VehicleDTO();
         vehicleDTO.setVin("123");
-        vehicleDTO.setLocation(new Coordinates(1.0, 2.0));
+        vehicleDTO.setCoordinates(new Coordinates(1.0, 2.0));
         vehicleDTO.setSpeed(10.0f);
         vehicleDTO.setLane(1);
         vehicleDTO.setTimestamp(new Date());

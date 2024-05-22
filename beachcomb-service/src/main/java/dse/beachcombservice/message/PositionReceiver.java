@@ -23,7 +23,8 @@ public class PositionReceiver {
     @RabbitHandler
     public void receiveMessage(String message) {
         try {
-            logger.trace("RabbitMQ message received:" + message);
+            logger.info("Test log message");
+            logger.info("RabbitMQ message received:{}", message);
             var vehicle = objectMapper.readValue(message, VehicleDTO.class);
             beachcombService.insert(vehicle);
         } catch (JsonProcessingException e) {
