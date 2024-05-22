@@ -3,8 +3,8 @@ package dse.beachcombservice.mongodb;
 import dse.beachcombservice.mongodb.models.IVehicleModel;
 import dse.beachcombservice.mongodb.models.LeadingVehicleModel;
 import dse.beachcombservice.mongodb.models.VehicleLocation;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,8 +12,13 @@ import java.util.List;
 @Repository
 public interface VehicleRepository extends MongoRepository<IVehicleModel, String> {
 
-    @Query("{'vin': {$ne: ?0}, 'location': {$near: {$geometry: {type: 'Point', coordinates: [?1, ?2]}, $maxDistance: ?3}}}")
-    List<LeadingVehicleModel> findByLocationNear(String vin, double longitude, double latitude, double maxDistance);
+    @Aggregation(pipeline = {
+            "{ '$match': { 'vin': { '$ne': null } } }",
+            "{ '$sort': { 'timestamp': -1 } }",
+            "{ '$group': { '_id': '$vin', 'location': { '$first': '$location' }, 'timestamp': { '$first': '$timestamp' }, 'vin': { '$first': '$vin' } } }",
+            "{ '$project': { '_id': 0, 'vin': 1, 'location': 1, 'timestamp': 1 } }"
+    })
+    List<VehicleLocation> findNewestVehiclesGroupedByVin();
 
-    List<VehicleLocation> findByVinIsNotNull();
+    VehicleLocation findFirstByVinOrderByTimestampDesc(String vin);
 }

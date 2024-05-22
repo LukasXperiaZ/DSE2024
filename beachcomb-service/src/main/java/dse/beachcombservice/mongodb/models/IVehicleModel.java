@@ -2,6 +2,7 @@ package dse.beachcombservice.mongodb.models;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "vehicles")
@@ -14,4 +15,6 @@ public interface IVehicleModel {
     String getVin();
 
     List<Double> getLocation();
+
+    Date getTimestamp();
 }
