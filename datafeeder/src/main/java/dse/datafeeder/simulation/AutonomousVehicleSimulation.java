@@ -50,7 +50,7 @@ public class AutonomousVehicleSimulation {
 
     // Initialize the vehicle to be at a defined start point (first lane).
     public AutonomousVehicleSimulation() {
-        Coordinates startPoint = new Coordinates(START_AUT_FIRST_LANE_LON, START_AUT_FIRST_LANE_LAT);
+        Coordinates startPoint = new Coordinates(START_AUT_FIRST_LANE_LON, FIRST_LANE_LAT);
         this.vehicleData = new VehicleData(vin, startPoint, 100.0, 1,
                 new Timestamp(System.currentTimeMillis()));
         this.instructions = this.generateInstructions();
@@ -117,19 +117,19 @@ public class AutonomousVehicleSimulation {
         instructions.add(new Instruction(90.0, 1, 100));
 
         // Increase the speed and change to lane 2.
-        instructions.add(new Instruction(110.0, 2, 100));
+        instructions.add(new Instruction(110.0, 2, 130));
 
         // Increase the speed again and change to lane 3.
-        instructions.add(new Instruction(130.0, 3, 80));
+        instructions.add(new Instruction(130.0, 3, 120));
 
         // Decrease the speed and change to lane 2.
-        instructions.add(new Instruction(125.0, 2, 70));
+        instructions.add(new Instruction(125.0, 2, 110));
 
         // Change to lane 1.
-        instructions.add(new Instruction(110.0, 1, 65));
+        instructions.add(new Instruction(110.0, 1, 80));
 
-        // Change to lane 1.
-        instructions.add(new Instruction(121.0, 1, 85));
+        // Increase the speed.
+        instructions.add(new Instruction(121.0, 1, 200));
 
         return instructions;
     }
@@ -189,18 +189,27 @@ public class AutonomousVehicleSimulation {
 
 
             // Adjust the lane
-            if (vehicleData.getLane() < currentInstruction.getLane()) {
-                // The vehicle has to change one lane to the left.
+            int laneToGo = currentInstruction.getLane();
+            double laneCoordinates = FIRST_LANE_LAT;
+            if (laneToGo == 2) {
+                laneCoordinates = SECOND_LANE_LAT;
+            } else if (laneToGo == 3) {
+                laneCoordinates = THIRD_LANE_LAT;
+            }
+
+            // + 0.000001 to prevent the car from going mad left-right-left-right-... when staying on one lane
+            if (vehicleData.getCoordinates().getLatitude() > laneCoordinates + 0.000001) {
+                // The vehicle has to drive to the left.
                 vehicleData.getCoordinates().changeCoordinatesByDistance(MOVEMENT_SIDEWAYS_PER_TICK, Direction.Left);
 
-            } else if (vehicleData.getLane() > currentInstruction.getLane()) {
-                // The vehicle has to change one lane to the right.
+            } else if (vehicleData.getCoordinates().getLatitude() < laneCoordinates - 0.000001) {
+                // The vehicle has to drive to the right.
                 vehicleData.getCoordinates().changeCoordinatesByDistance(MOVEMENT_SIDEWAYS_PER_TICK, Direction.Right);
             }
             // Adjust the lane number
-            double diffLane1 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_AUT_FIRST_LANE_LAT);
-            double diffLane2 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_SECOND_LANE_LAT);
-            double diffLane3 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_THIRD_LANE_LAT);
+            double diffLane1 = Math.abs(vehicleData.getCoordinates().getLatitude() - FIRST_LANE_LAT);
+            double diffLane2 = Math.abs(vehicleData.getCoordinates().getLatitude() - SECOND_LANE_LAT);
+            double diffLane3 = Math.abs(vehicleData.getCoordinates().getLatitude() - THIRD_LANE_LAT);
 
             if (diffLane1 < diffLane2 && diffLane1 < diffLane3) {
                 // The car is closest to lane 1

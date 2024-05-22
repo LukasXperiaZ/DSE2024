@@ -21,3 +21,7 @@
 .gridList {
   background-color: #c3e6c3;
 }
+
+.rotate90 {
+  transform: rotate(90deg);
+}

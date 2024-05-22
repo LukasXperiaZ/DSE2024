@@ -1,5 +1,6 @@
 package dse.datafeeder.simulation;
 
+import dse.datafeeder.constants.Constants;
 import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.FVState;
@@ -9,8 +10,6 @@ import dse.datafeeder.rabbitMq.RabbitMq;
 import dse.datafeeder.rest.InventoryClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.sql.Timestamp;
 import java.util.concurrent.Executors;
@@ -49,7 +48,7 @@ public class NonAutonomousVehicleSimulation {
     private final RabbitMq rabbitMq = new RabbitMq();
 
     public NonAutonomousVehicleSimulation() {
-        Coordinates startPoint = new Coordinates(START_NON_FIRST_LANE_LON, START_NON_FIRST_LANE_LAT);
+        Coordinates startPoint = new Coordinates(START_NON_FIRST_LANE_LON, Constants.FIRST_LANE_LAT);
         this.vehicleData = new VehicleData(vin, startPoint, 110.0, 1,
                 new Timestamp(System.currentTimeMillis()));
         this.nextInstruction = new Instruction(110.0, 1, 1);
@@ -180,9 +179,9 @@ public class NonAutonomousVehicleSimulation {
                 vehicleData.getCoordinates().changeCoordinatesByDistance(MOVEMENT_SIDEWAYS_PER_TICK, Direction.Right);
             }
             // Adjust the lane number
-            double diffLane1 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_AUT_FIRST_LANE_LAT);
-            double diffLane2 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_SECOND_LANE_LAT);
-            double diffLane3 = Math.abs(vehicleData.getCoordinates().getLatitude() - START_THIRD_LANE_LAT);
+            double diffLane1 = Math.abs(vehicleData.getCoordinates().getLatitude() - FIRST_LANE_LAT);
+            double diffLane2 = Math.abs(vehicleData.getCoordinates().getLatitude() - SECOND_LANE_LAT);
+            double diffLane3 = Math.abs(vehicleData.getCoordinates().getLatitude() - THIRD_LANE_LAT);
 
             if (diffLane1 < diffLane2 && diffLane1 < diffLane3) {
                 // The car is closest to lane 1

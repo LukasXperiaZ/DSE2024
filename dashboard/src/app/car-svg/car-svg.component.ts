@@ -33,7 +33,7 @@ export class CarSvgComponent implements OnInit, OnDestroy {
     this.getVehicleData();
 
     //setInterval(this.getVehicleData, 5000)
-    setInterval(this.getVehicleData.bind(this), 1000);
+    setInterval(this.getVehicleData.bind(this), 100);
   }
 
   ngOnDestroy() {
@@ -132,14 +132,14 @@ export class CarSvgComponent implements OnInit, OnDestroy {
   // ----- end -----
 
   getVehicleDataTest() {
-    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, Constants.FIRST_LANE_LAT), 110.0, 1, new Date());
-    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, Constants.FIRST_LANE_LAT), 100.0, 1, new Date());
+    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, Constants.FIRST_LANE_LAT));
+    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, Constants.FIRST_LANE_LAT));
 
-    let vehicleSecondLane = new VehicleData("SL", new Coordinates(48.198555, Constants.SECOND_LANE_LAT), 125.0, 2, new Date());
-    let vehicleThirdLane = new VehicleData("TL", new Coordinates(48.198777, Constants.THIRD_LANE_LAT), 130.0, 3, new Date());
+    let vehicleSecondLane = new VehicleData("SL", new Coordinates(48.198555, Constants.SECOND_LANE_LAT));
+    let vehicleThirdLane = new VehicleData("TL", new Coordinates(48.198777, Constants.THIRD_LANE_LAT));
 
-    let vehicleTopLeft = new VehicleData("TL", new Coordinates(48.199064, Constants.THIRD_LANE_LAT - Constants.LANE_DIFFERENCE / 2.0), 130.0, 3, new Date());
-    let vehicleBottomRight = new VehicleData("BR", new Coordinates(48.198141, Constants.FIRST_LANE_LAT + Constants.LANE_DIFFERENCE / 2.0), 130.0, 3, new Date());
+    let vehicleTopLeft = new VehicleData("TL", new Coordinates(48.199064, Constants.THIRD_LANE_LAT - Constants.LANE_DIFFERENCE / 2.0));
+    let vehicleBottomRight = new VehicleData("BR", new Coordinates(48.198141, Constants.FIRST_LANE_LAT + Constants.LANE_DIFFERENCE / 2.0));
 
     this.vehicleData = [vehicle, autonomousVehicle, vehicleSecondLane, vehicleThirdLane, vehicleTopLeft, vehicleBottomRight];
   }
