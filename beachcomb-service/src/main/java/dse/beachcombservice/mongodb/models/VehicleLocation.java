@@ -9,10 +9,13 @@ public final class VehicleLocation implements IVehicleModel {
     private final Date timestamp;
     private final List<Double> location;
 
-    public VehicleLocation(String vin, Date timestamp, List<Double> location) {
+    private final double speed;
+
+    public VehicleLocation(String vin, Date timestamp, List<Double> location, double speed) {
         this.vin = vin;
         this.timestamp = timestamp;
         this.location = location;
+        this.speed = speed;
     }
 
     public String getVin() {
@@ -25,6 +28,10 @@ public final class VehicleLocation implements IVehicleModel {
 
     public List<Double> getLocation() {
         return location;
+    }
+
+    public double getSpeed() {
+        return speed;
     }
 
     @Override
