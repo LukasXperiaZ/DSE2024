@@ -50,8 +50,12 @@ export class CarListComponent {
   }
 
   getVehicleData() : VehicleData[] {
-    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, 16.370004), 110.0, 1, new Date())
-    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, 16.370004), 100.0, 1, new Date())
-    return [vehicle, autonomousVehicle]
+    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, 16.370004), 110.0, 1, new Date());
+    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, 16.370004), 100.0, 1, new Date());
+
+    let vehicleTest = new VehicleData("TEST1", new Coordinates(48.198555, 16.369975), 125.0, 2, new Date());
+    let vehicleTest1 = new VehicleData("TEST2", new Coordinates(48.198777, 16.369946), 130.0, 3, new Date());
+
+    return [vehicle, autonomousVehicle, vehicleTest, vehicleTest1]
   }
 }

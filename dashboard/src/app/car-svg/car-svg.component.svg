@@ -7,14 +7,14 @@
   @for (vehicle of vehicleData; track vehicle) {
     <g>
       <rect
-        [attr.x]="latitudeToX(vehicle.coordinates.latitude)"
+        [attr.x]="latitudeToX(vehicle.coordinates.latitude) + 25"
         [attr.y]="longitudeToY(vehicle.coordinates.longitude)"
         width="50"
         height="80"
         [attr.fill]="car"
       />
       <text
-        [attr.x]="latitudeToX(vehicle.coordinates.latitude) + 7"
+        [attr.x]="latitudeToX(vehicle.coordinates.latitude) + 25 + 7"
         [attr.y]="longitudeToY(vehicle.coordinates.longitude) + 45"
         fill="white"
       >
