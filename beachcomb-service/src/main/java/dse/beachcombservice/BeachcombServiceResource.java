@@ -3,7 +3,6 @@ package dse.beachcombservice;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dse.beachcombservice.mongodb.VehicleRepository;
-import dse.beachcombservice.mongodb.models.VehicleLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -16,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("beachcomb")
 public class BeachcombServiceResource {
 
     Logger logger = LoggerFactory.getLogger(BeachcombServiceResource.class);
@@ -40,11 +40,18 @@ public class BeachcombServiceResource {
         return beachcombService.getFollowMeCandidates();
     }
 
-    @GetMapping("/{vin}")
+    @GetMapping("/vehicles/{vin}")
     public VehicleLocationDTO getVehicleByVin(@PathVariable String vin) {
         logger.info("Returning vehicle with vin: " + vin);
         return beachcombService.getVehicleLocationByVin(vin);
     }
+
+    @GetMapping("/test2")
+    public void test2() {
+        var allVehicles = beachcombService.findVehiclesNearPoint("123", 1.0, 2.0, 0.2);
+        System.out.println(allVehicles);
+    }
+
 
     @GetMapping("/test")
     public void test() {
