@@ -170,11 +170,20 @@ public class NonAutonomousVehicleSimulation {
 
 
             // Adjust the lane
-            if (vehicleData.getLane() < instruction.getLane()) {
+            int laneToGo = instruction.getLane();
+            double laneCoordinates = FIRST_LANE_LAT;
+            if (laneToGo == 2) {
+                laneCoordinates = SECOND_LANE_LAT;
+            } else if (laneToGo == 3) {
+                laneCoordinates = THIRD_LANE_LAT;
+            }
+
+            // + 0.000001 to prevent the car from going mad left-right-left-right-... when staying on one lane
+            if (vehicleData.getCoordinates().getLatitude() > laneCoordinates + 0.000001) {
                 // The vehicle has to change one lane to the left.
                 vehicleData.getCoordinates().changeCoordinatesByDistance(MOVEMENT_SIDEWAYS_PER_TICK, Direction.Left);
 
-            } else if (vehicleData.getLane() > instruction.getLane()) {
+            } else if (vehicleData.getCoordinates().getLatitude() < laneCoordinates - 0.000001) {
                 // The vehicle has to change one lane to the right.
                 vehicleData.getCoordinates().changeCoordinatesByDistance(MOVEMENT_SIDEWAYS_PER_TICK, Direction.Right);
             }
