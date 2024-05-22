@@ -6,23 +6,39 @@
     <rect x="420" y="0" width="10" height="800" [attr.fill]="white"/>
     <rect x="630" y="0" width="10" height="800" [attr.fill]="white"/>
   </g>
-  @for (vehicle of vehicleData; track vehicle) {
+  <g *ngIf="vehicleData.length > 0">
+    @for (vehicle of vehicleData; track vehicle) {
+      <g>
+        <rect
+          [attr.x]="latitudeToX(vehicle.coordinates.latitude) - 25"
+          [attr.y]="longitudeToY(vehicle.coordinates.longitude)"
+          width="50"
+          height="80"
+          [attr.fill]="car"
+        />
+        <text
+          [attr.x]="latitudeToX(vehicle.coordinates.latitude) - 25 + 10"
+          [attr.y]="longitudeToY(vehicle.coordinates.longitude) + 45"
+          fill="white"
+        >
+          {{vehicle.vin.substring(0,3)}}
+        </text>
+      </g>
+    }
     <g>
-      <rect
-        [attr.x]="latitudeToX(vehicle.coordinates.latitude) - 25"
-        [attr.y]="longitudeToY(vehicle.coordinates.longitude)"
-        width="50"
-        height="80"
-        [attr.fill]="car"
+      <line
+        [attr.x1]="getDistanceLineCoordinates()[0]"
+        [attr.y1]="getDistanceLineCoordinates()[1] + 80"
+        [attr.x2]="getDistanceLineCoordinates()[2]"
+        [attr.y2]="getDistanceLineCoordinates()[3]"
+        style="stroke:{{dist}};stroke-width:2"
       />
       <text
-        [attr.x]="latitudeToX(vehicle.coordinates.latitude) - 25 + 10"
-        [attr.y]="longitudeToY(vehicle.coordinates.longitude) + 45"
-        fill="white"
+        [attr.x]="(getDistanceLineCoordinates()[2]-getDistanceLineCoordinates()[0])/2 + getDistanceLineCoordinates()[0] + 10"
+        [attr.y]="(getDistanceLineCoordinates()[3]-getDistanceLineCoordinates()[1])/2 + getDistanceLineCoordinates()[1] + 80"
       >
-        {{vehicle.vin.substring(0,3)}}
+        {{(Math.round(getDistanceLineCoordinates()[4] * 10) / 10).toFixed(1)}} m
       </text>
     </g>
-  }
-
+  </g>
 </svg>
