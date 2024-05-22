@@ -212,4 +212,8 @@ public class NonAutonomousVehicleSimulation {
         InventoryClient inventoryClient = new InventoryClient();
         inventoryClient.registerCar(nonAutonomousCar);
     }
+
+    public String getVin() {
+        return vin;
+    }
 }

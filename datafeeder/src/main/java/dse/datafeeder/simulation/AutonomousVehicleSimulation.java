@@ -235,4 +235,8 @@ public class AutonomousVehicleSimulation {
         InventoryClient inventoryClient = new InventoryClient();
         inventoryClient.registerCar(autonomousCar);
     }
+
+    public String getVin() {
+        return vin;
+    }
 }
