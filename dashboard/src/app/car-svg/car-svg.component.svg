@@ -14,11 +14,11 @@
         [attr.fill]="car"
       />
       <text
-        [attr.x]="latitudeToX(vehicle.coordinates.latitude) + 25 + 7"
+        [attr.x]="latitudeToX(vehicle.coordinates.latitude) + 25 + 10"
         [attr.y]="longitudeToY(vehicle.coordinates.longitude) + 45"
         fill="white"
       >
-        {{vehicle.vin.substring(0,4)}}
+        {{vehicle.vin.substring(0,3)}}
       </text>
     </g>
   }
