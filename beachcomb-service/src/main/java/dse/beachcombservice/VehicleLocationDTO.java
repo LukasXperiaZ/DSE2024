@@ -2,11 +2,11 @@ package dse.beachcombservice;
 
 public class VehicleLocationDTO {
     String vin;
-    private Coordinates location;
+    private Coordinates coordinates;
 
-    public VehicleLocationDTO(String vin, Coordinates location) {
+    public VehicleLocationDTO(String vin, Coordinates coordinates) {
         this.vin = vin;
-        this.location = location;
+        this.coordinates = coordinates;
     }
 
     public String getVin() {
@@ -17,11 +17,11 @@ public class VehicleLocationDTO {
         this.vin = vin;
     }
 
-    public Coordinates getLocation() {
-        return location;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setLocation(Coordinates location) {
-        this.location = location;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }
