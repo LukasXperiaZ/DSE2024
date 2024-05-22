@@ -10,6 +10,8 @@ import {MatGridList, MatGridTile, MatGridTileText} from "@angular/material/grid-
 import {VehicleData} from "../../dto/VehicleData";
 import {Coordinates} from "../../dto/Coordinates";
 import {CarSvgComponent} from "../car-svg/car-svg.component";
+import {Constants} from "../../constants/Constants";
+import {BeachCombService} from "../beach-comb.service";
 
 @Component({
   selector: 'app-car-list',
@@ -40,7 +42,7 @@ export class CarListComponent {
   vehicleData: VehicleData[] | undefined
 
   constructor(private inventoryService: InventoryService,
-              ) {
+              private beachCombService: BeachCombService) {
     this.getCars()
   }
 
@@ -49,13 +51,16 @@ export class CarListComponent {
       .subscribe(cars => this.cars = cars)
   }
 
-  getVehicleData() : VehicleData[] {
-    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, 16.370004), 110.0, 1, new Date());
-    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, 16.370004), 100.0, 1, new Date());
+  getVehicleDataTest() : VehicleData[] {
+    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, Constants.FIRST_LANE_LAT), 110.0, 1, new Date());
+    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, Constants.FIRST_LANE_LAT), 100.0, 1, new Date());
 
-    let vehicleTest = new VehicleData("TEST1", new Coordinates(48.198555, 16.369975), 125.0, 2, new Date());
-    let vehicleTest1 = new VehicleData("TEST2", new Coordinates(48.198777, 16.369946), 130.0, 3, new Date());
+    let vehicleSecondLane = new VehicleData("SL", new Coordinates(48.198555, Constants.SECOND_LANE_LAT), 125.0, 2, new Date());
+    let vehicleThirdLane = new VehicleData("TL", new Coordinates(48.198777, Constants.THIRD_LANE_LAT), 130.0, 3, new Date());
 
-    return [vehicle, autonomousVehicle, vehicleTest, vehicleTest1]
+    let vehicleTopLeft = new VehicleData("TL", new Coordinates(48.199064, Constants.THIRD_LANE_LAT - Constants.LANE_DIFFERENCE/2.0), 130.0, 3, new Date());
+    let vehicleBottomRight = new VehicleData("BR", new Coordinates(48.198141, Constants.FIRST_LANE_LAT + Constants.LANE_DIFFERENCE/2.0), 130.0, 3, new Date());
+
+    return [vehicle, autonomousVehicle, vehicleSecondLane, vehicleThirdLane, vehicleTopLeft, vehicleBottomRight]
   }
 }

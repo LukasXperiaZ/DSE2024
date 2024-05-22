@@ -1,5 +1,5 @@
-<mat-grid-list cols="9" rowHeight="800px" gutterSize="10px">
-  <mat-grid-tile colspan="2" class="lightblue">
+<mat-grid-list cols="12" rowHeight="800px" gutterSize="10px" class="gridList">
+  <mat-grid-tile colspan="3" class="lightblue">
     <button mat-icon-button color="primary" aria-label="reload" (click)="getCars()">
       <mat-icon>refresh</mat-icon>
     </button>
@@ -17,8 +17,8 @@
 
   <mat-grid-tile colspan="2" class="meadow"></mat-grid-tile>
 
-  <mat-grid-tile colspan="3">
-    <app-car-svg class="height800 width620" [vehicleData]="getVehicleData()"></app-car-svg>
+  <mat-grid-tile colspan="5">
+    <app-car-svg *ngIf="cars" class="height800 width640" [cars]="cars"></app-car-svg>
   </mat-grid-tile>
 
   <mat-grid-tile colspan="2" class="meadow"></mat-grid-tile>
