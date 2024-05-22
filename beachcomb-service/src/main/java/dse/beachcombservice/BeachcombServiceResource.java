@@ -40,6 +40,7 @@ public class BeachcombServiceResource {
         return beachcombService.getFollowMeCandidates();
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/vehicles/{vin}")
     public VehicleLocationDTO getVehicleByVin(@PathVariable String vin) {
         logger.info("Returning vehicle with vin: " + vin);
