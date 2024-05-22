@@ -1,7 +1,9 @@
 package dse.beachcombservice.message;
 
-import com.rabbitmq.client.AMQP;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,7 +17,7 @@ public class RabbitConfig {
 
     @Bean
     public FanoutExchange exchange() {
-        return new FanoutExchange("position");
+        return new FanoutExchange("position", false, false);
     }
 
     @Bean
