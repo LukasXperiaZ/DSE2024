@@ -4,7 +4,7 @@
       <mat-icon>refresh</mat-icon>
     </button>
 
-    <mat-list #carsList *ngIf="cars">
+    <mat-list *ngIf="cars">
       @for (car of cars; track car) {
         <mat-list-item>
           <span matListItemTitle>{{ car.oem }} {{ car.model }} ({{ car.vin }})</span>

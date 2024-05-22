@@ -7,11 +7,7 @@ import {MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatDivider} from "@angular/material/divider";
 import {MatGridList, MatGridTile, MatGridTileText} from "@angular/material/grid-list";
-import {VehicleData} from "../../dto/VehicleData";
-import {Coordinates} from "../../dto/Coordinates";
 import {CarSvgComponent} from "../car-svg/car-svg.component";
-import {Constants} from "../../constants/Constants";
-import {BeachCombService} from "../beach-comb.service";
 
 @Component({
   selector: 'app-car-list',
