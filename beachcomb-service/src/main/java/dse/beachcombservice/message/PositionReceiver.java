@@ -23,7 +23,6 @@ public class PositionReceiver {
     @RabbitHandler
     public void receiveMessage(String message) {
         try {
-            logger.info("Test log message");
             logger.info("RabbitMQ message received:{}", message);
             var vehicle = objectMapper.readValue(message, VehicleDTO.class);
             beachcombService.insert(vehicle);
