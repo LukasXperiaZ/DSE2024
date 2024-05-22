@@ -24,10 +24,12 @@ export class CarSvgComponent {
   }
 
   latitudeToX(latitude: number) {
+    // TODO map statically (i.e. the latitude of the lanes are fixed as they go straight)
     return 10;
   }
 
   longitudeToY(longitude: number) {
+    // TODO map dynamically (depending on the greatest distance between two cars)
     return 20;
   }
 }
