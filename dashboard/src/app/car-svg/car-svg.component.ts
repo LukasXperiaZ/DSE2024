@@ -132,14 +132,14 @@ export class CarSvgComponent implements OnInit, OnDestroy {
   // ----- end -----
 
   getVehicleDataTest() {
-    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, Constants.FIRST_LANE_LAT));
-    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, Constants.FIRST_LANE_LAT));
+    let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, Constants.FIRST_LANE_LAT), 100);
+    let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, Constants.FIRST_LANE_LAT), 110);
 
-    let vehicleSecondLane = new VehicleData("SL", new Coordinates(48.198555, Constants.SECOND_LANE_LAT));
-    let vehicleThirdLane = new VehicleData("TL", new Coordinates(48.198777, Constants.THIRD_LANE_LAT));
+    let vehicleSecondLane = new VehicleData("SL", new Coordinates(48.198555, Constants.SECOND_LANE_LAT), 120);
+    let vehicleThirdLane = new VehicleData("TL", new Coordinates(48.198777, Constants.THIRD_LANE_LAT), 130);
 
-    let vehicleTopLeft = new VehicleData("TL", new Coordinates(48.199064, Constants.THIRD_LANE_LAT - Constants.LANE_DIFFERENCE / 2.0));
-    let vehicleBottomRight = new VehicleData("BR", new Coordinates(48.198141, Constants.FIRST_LANE_LAT + Constants.LANE_DIFFERENCE / 2.0));
+    let vehicleTopLeft = new VehicleData("TL", new Coordinates(48.199064, Constants.THIRD_LANE_LAT - Constants.LANE_DIFFERENCE / 2.0), 111);
+    let vehicleBottomRight = new VehicleData("BR", new Coordinates(48.198141, Constants.FIRST_LANE_LAT + Constants.LANE_DIFFERENCE / 2.0), 122);
 
     this.vehicleData = [vehicle, autonomousVehicle, vehicleSecondLane, vehicleThirdLane, vehicleTopLeft, vehicleBottomRight];
   }

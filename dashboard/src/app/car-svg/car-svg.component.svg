@@ -8,7 +8,7 @@
   </g>
   <g *ngIf="vehicleData.length > 0">
     @for (vehicle of vehicleData; track vehicle) {
-      <g>
+      <g *ngIf="vehicle">
         <rect
           [attr.x]="latitudeToX(vehicle.coordinates.latitude) - 25"
           [attr.y]="longitudeToY(vehicle.coordinates.longitude)"
@@ -23,9 +23,16 @@
         >
           {{vehicle.vin.substring(0,3)}}
         </text>
+        <text
+          [attr.x]="latitudeToX(vehicle.coordinates.latitude) - 25 + 60"
+          [attr.y]="longitudeToY(vehicle.coordinates.longitude) + 45"
+          fill="black"
+        >
+          {{vehicle.speed}} km/h
+        </text>
       </g>
     }
-    <g>
+    <g *ngIf="vehicleData[0] && vehicleData[1]">
       <line
         [attr.x1]="getDistanceLineCoordinates()[0]"
         [attr.y1]="getDistanceLineCoordinates()[1] + 80"
