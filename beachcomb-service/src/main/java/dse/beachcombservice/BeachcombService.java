@@ -66,9 +66,14 @@ public class BeachcombService {
         logger.trace("Retrieving vehicle location by vin!");
         var vehicleLocation = vehicleRepository.findFirstByVinOrderByTimestampDesc(vin);
         if (vehicleLocation == null) throw new VehicleNotFoundException(vin);
-        return new VehicleLocationDTO(vehicleLocation.getVin(),
-                new Coordinates(vehicleLocation.getLocation().get(0), vehicleLocation.getLocation().get(1)),
-                vehicleLocation.getSpeed());
+        VehicleLocationDTO vehicleLocationDTO = new VehicleLocationDTO();
+        vehicleLocationDTO.setVin(vehicleLocation.getVin());
+        vehicleLocationDTO.setCoordinates(new Coordinates(vehicleLocation.getLocation().get(0), vehicleLocation.getLocation().get(1)));
+        vehicleLocationDTO.setSpeed(vehicleLocation.getSpeed());
+        vehicleLocationDTO.setTargetSpeed(vehicleLocation.getTargetSpeed());
+        vehicleLocationDTO.setLane(vehicleLocation.getLane());
+        vehicleLocationDTO.setTargetLane(vehicleLocation.getTargetLane());
+        return vehicleLocationDTO;
     }
 
     public List<VehicleLocation> findVehiclesNearPoint(String vin, double longitude, double latitude, double maxDistance) {
