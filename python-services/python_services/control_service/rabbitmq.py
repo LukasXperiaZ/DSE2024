@@ -59,7 +59,7 @@ class RabbitMQConsumer(threading.Thread):
             # this is an update from a lv
             state = database.state.find_one({"lv": data["vin"]})
             if state is None:
-                logger.info(f"Vin {data['vin']} is not a leading vehicle")
+                logger.debug(f"Vin {data['vin']} is not a leading vehicle")
             if state is not None:
                 database.state.update_one({"lv": data["vin"]}, {"$set": {"target_speed": data["targetSpeed"], "target_lane": data["targetLane"]}})
 

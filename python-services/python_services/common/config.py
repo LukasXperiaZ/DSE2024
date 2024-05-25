@@ -7,9 +7,9 @@ RABBITMQ_PORT = os.environ.get("RABBITMQ_PORT", 5672)
 RABBITMQ_USER = os.environ.get("RABBITMQ_USER", "guest")
 RABBITMQ_PASS = os.environ.get("RABBITMQ_PASS", "guest")
 
-INVENTORY_SERVICE_URL = os.environ.get("INVENTORY_SERVICE_URL", "http://localhost:8001")
-CONTROL_SERVICE_URL = os.environ.get("CONTROL_SERVICE_URL", "http://localhost:8002")
-BEACHCOMB_SERVICE_URL = os.environ.get("BEACHCOMB_SERVICE_URL", "http://localhost:8003")
+INVENTORY_SERVICE_URL = os.environ.get("INVENTORY_SERVICE_URL", "http://inventoryservice:8001")
+CONTROL_SERVICE_URL = os.environ.get("CONTROL_SERVICE_URL", "http://controlservice:8002")
+BEACHCOMB_SERVICE_URL = os.environ.get("BEACHCOMB_SERVICE_URL", "http://beachcombservice:8080")
 
 
 FOLLOWME_END_TIME = os.environ.get("FOLLOWME_END_TIME", 30)
