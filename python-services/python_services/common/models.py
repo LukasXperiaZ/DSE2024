@@ -19,9 +19,9 @@ class VehicleData(BaseModel):
     coordinates: dict
     speed: float
     lane: int
-    timestamp: Optional[datetime.datetime]
     targetSpeed: Optional[float]
     targetLane: Optional[int]
+    timestamp: Optional[datetime.datetime] = None
 
 
 class CarsInReach(BaseModel):
