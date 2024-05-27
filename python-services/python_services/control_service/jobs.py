@@ -8,7 +8,7 @@ import schedule
 from python_services.common.config import FOLLOWME_END_TIME
 from python_services.control_service import database
 from python_services.control_service.rabbitmq import channel
-from python_services.control_service.requests import get_cars_in_reach, get_vehicle_data
+from python_services.control_service.beachcomb_client import get_cars_in_reach, get_vehicle_data
 
 logger = logging.getLogger(__name__)
 
@@ -54,8 +54,8 @@ def check_nearing_cars():
         database.state.insert_one({"lv": car,
                                    "fv": fv,
                                    "followme_start": datetime.datetime.now(),
-                                   "target_lane": lv_data.target_lane,
-                                    "target_speed": lv_data.target_speed,
+                                   "target_lane": lv_data.targetLane,
+                                    "target_speed": lv_data.targetSpeed,
                                    "successive_check_fails": 0
                                    })
 
@@ -71,8 +71,8 @@ def check_nearing_cars():
                               body=str({
                                   "usesFM": True,
                                     "vinLV": car,
-                                    "targetLane": lv_data.target_lane,
-                                    "targetSpeed": lv_data.target_speed
+                                    "targetLane": lv_data.targetLane,
+                                    "targetSpeed": lv_data.targetSpeed
                               }))
 
         database.eventlog.insert_one({
@@ -118,8 +118,8 @@ def check_followme_speeds():
     for state in database.state.find():
         lv_data = get_vehicle_data(state["lv"])
         fv_data = get_vehicle_data(state["fv"])
-        target_speed = lv_data.target_speed
-        target_lane = lv_data.target_lane
+        target_speed = lv_data.targetSpeed
+        target_lane = lv_data.targetLane
         speed = fv_data.speed
         lane = fv_data.lane
         message = ""

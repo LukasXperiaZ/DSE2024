@@ -3,9 +3,15 @@ package dse.beachcombservice;
 public class VehicleLocationDTO {
     String vin;
     private Coordinates coordinates;
-    private double speed;
+    private Double speed;
+    private Double targetSpeed;
+    private Integer lane;
+    private Integer targetLane;
 
-    public VehicleLocationDTO(String vin, Coordinates coordinates, double speed) {
+    public VehicleLocationDTO() {
+    }
+
+    public VehicleLocationDTO(String vin, Coordinates coordinates, Double speed) {
         this.vin = vin;
         this.coordinates = coordinates;
         this.speed = speed;
@@ -27,11 +33,35 @@ public class VehicleLocationDTO {
         this.coordinates = coordinates;
     }
 
-    public double getSpeed() {
+    public Double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(Double speed) {
         this.speed = speed;
+    }
+
+    public Double getTargetSpeed() {
+        return targetSpeed;
+    }
+
+    public void setTargetSpeed(Double targetSpeed) {
+        this.targetSpeed = targetSpeed;
+    }
+
+    public Integer getLane() {
+        return lane;
+    }
+
+    public void setLane(Integer lane) {
+        this.lane = lane;
+    }
+
+    public Integer getTargetLane() {
+        return targetLane;
+    }
+
+    public void setTargetLane(Integer targetLane) {
+        this.targetLane = targetLane;
     }
 }

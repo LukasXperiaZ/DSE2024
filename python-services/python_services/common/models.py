@@ -1,5 +1,5 @@
 import datetime
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 from pydantic import BaseModel
 
@@ -16,12 +16,12 @@ class RegisterCar(CarBase):
 
 class VehicleData(BaseModel):
     vin: str
-    coordinates: List[float]
+    coordinates: dict
     speed: float
     lane: int
-    timestamp: datetime.datetime
-    target_speed: float
-    target_lane: int
+    timestamp: Optional[datetime.datetime]
+    targetSpeed: Optional[float]
+    targetLane: Optional[int]
 
 
 class CarsInReach(BaseModel):

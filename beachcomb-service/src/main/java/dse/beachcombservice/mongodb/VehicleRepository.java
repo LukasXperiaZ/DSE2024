@@ -2,6 +2,7 @@ package dse.beachcombservice.mongodb;
 
 import dse.beachcombservice.mongodb.models.IVehicleModel;
 import dse.beachcombservice.mongodb.models.LeadingVehicleModel;
+import dse.beachcombservice.mongodb.models.VehicleControlLocation;
 import dse.beachcombservice.mongodb.models.VehicleLocation;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -20,5 +21,5 @@ public interface VehicleRepository extends MongoRepository<IVehicleModel, String
     })
     List<VehicleLocation> findNewestVehiclesGroupedByVin();
 
-    VehicleLocation findFirstByVinOrderByTimestampDesc(String vin);
+    VehicleControlLocation findFirstByVinOrderByTimestampDesc(String vin);
 }
