@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: control-deployment
+  labels:
+    app: control
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: control
+  template:
+    metadata:
+      labels:
+        app: control
+    spec:
+      containers:
+        - name: control
+          image: docker.io/library/control_service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8002
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://dse24:HaB1glbuEZRkO9kw@cluster0.cjccyax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            - name: RABBITMQ_HOST
+              value: "rabbitmq-service.default"
+            - name: RABBITMQ_PASS
+              value: secret
+            - name: RABBITMQ_PORT
+              value: "5672"
+            - name: INVENTORY_SERVICE_URL
+              value: "http://inventory-service.default:8001"
+            - name: BEACHCOMB_SERVICE_URL
+              value: "http://beachcomb-service.default:8080"

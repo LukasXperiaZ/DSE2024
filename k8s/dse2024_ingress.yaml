@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dse2024-ingress
+  #annotations:
+  #  nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: pathway.example
+      http:
+        paths:
+          - path: /inventory     # (/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: inventory-service
+                port:
+                  number: 8001
+          - path: /beachcomb     # (/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: beachcomb-service
+                port:
+                  number: 8080
+          - path: /control     # (/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: control-service
+                port:
+                  number: 8002
+
+    - host: rabbit.example
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rabbitmq-ui-service
+                port:
+                  number: 15672

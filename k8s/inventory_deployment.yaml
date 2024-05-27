@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-deployment
+  labels:
+    app: inventory
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory
+  template:
+    metadata:
+      labels:
+        app: inventory
+    spec:
+      containers:
+        - name: inventory
+          image: docker.io/library/inventory_service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8001
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://dse24:HaB1glbuEZRkO9kw@cluster0.cjccyax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+

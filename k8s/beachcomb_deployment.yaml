@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beachcomb-deployment
+  labels:
+    app: beachcomb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beachcomb
+  template:
+    metadata:
+      labels:
+        app: beachcomb
+    spec:
+      containers:
+        - name: beachcomb
+          image: docker.io/library/beachcomb_service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8002
+          env:
+            - name: MONGO_URI
+              value: "mongodb://dse24:HaB1glbuEZRkO9kw@cluster0.cjccyax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq-service.default
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: secret
+            - name: SPRING_RABBITMQ_USERNAME
+              value: guest
