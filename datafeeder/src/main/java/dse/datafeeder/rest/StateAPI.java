@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 /*
  * This class is used for receiving requests regarding the state of the vehicles.
+ * Currently only used in dev and not production.
  */
 @RestController
 @RequestMapping("state")
@@ -28,20 +29,28 @@ public class StateAPI {
     // Initialize the simulations at the start of the application.
     @PostConstruct
     public void init() {
-        logger.info("Initializing the state API");
         autonomousVehicleSimulation = new AutonomousVehicleSimulation();
-        autonomousVehicleSimulation.registerVehicle();
-        autonomousVehicleSimulation.startSimulation();
-
         nonAutonomousVehicleSimulation = new NonAutonomousVehicleSimulation();
-        nonAutonomousVehicleSimulation.registerVehicle();
-        nonAutonomousVehicleSimulation.startSimulation();
     }
 
     // This is just to test if the api works.
     @GetMapping("/get-project-name")
     public String getProjectName() {
         return "Datafeeder";
+    }
+
+    @GetMapping("/registerVehicles")
+    public String registerVehicles() {
+        autonomousVehicleSimulation.registerVehicle();
+        nonAutonomousVehicleSimulation.registerVehicle();
+        return "Successful!";
+    }
+
+    @GetMapping("/startSimulations")
+    public String startSimulations() {
+        autonomousVehicleSimulation.startSimulation();
+        nonAutonomousVehicleSimulation.startSimulation();
+        return "Successful!";
     }
 
     // Send a put request to set the state of the autonomous vehicle.

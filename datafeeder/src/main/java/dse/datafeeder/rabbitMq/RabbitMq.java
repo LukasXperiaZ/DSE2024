@@ -9,6 +9,8 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class RabbitMq {
 
@@ -32,7 +34,8 @@ public class RabbitMq {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        logger.debug("Sending vehicle data: {}", jsonString);
+        logger.trace("Sending vehicle data: {}", jsonString);
+
         rabbitTemplate.convertAndSend(exchange, "", jsonString);
     }
 

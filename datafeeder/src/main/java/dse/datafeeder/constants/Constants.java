@@ -5,6 +5,8 @@ package dse.datafeeder.constants;
  */
 public class Constants {
 
+    public static final int tickMill = 100;
+
     // Earth radios approximated in meter.
     public static final int EARTH_RADIUS = 6371000;
 

@@ -43,6 +43,8 @@ public class NonAutonomousVehicleSimulation {
     // Semaphore required to manage concurrent access when updating the previous instruction.
     private final Semaphore previousInstructionSemaphore = new Semaphore(1);
 
+    private boolean behaveBad = false;
+
     private ScheduledExecutorService executor;
 
     private final RabbitMq rabbitMq = new RabbitMq();
@@ -57,7 +59,7 @@ public class NonAutonomousVehicleSimulation {
 
     public void startSimulation() {
         this.executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(simulation, 0, 100, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(simulation, 0, tickMill, TimeUnit.MILLISECONDS);
     }
 
     public void enableFM(FVState fvState) {
@@ -155,7 +157,8 @@ public class NonAutonomousVehicleSimulation {
                     // This "bug" is intentional to satisfy the simulation scenario:
                     // I.e. at the last speed change (speeding up to 121.0 km/h), the FV will not adjust its speed to
                     // the target speed.
-                } else {
+                    behaveBad = true;
+                } else if (!behaveBad) {
                     // Normal and expected behavior otherwise: The vehicle adjusts the speed.
                     vehicleData.setSpeed(vehicleData.getSpeed() + SPEED_INCREASE_PER_TICK);
                 }
@@ -165,7 +168,7 @@ public class NonAutonomousVehicleSimulation {
 
             }
             // Adjust the coordinates to go forward
-            double distance = (vehicleData.getSpeed() / 3.6) * 0.1;
+            double distance = (vehicleData.getSpeed() / 3.6) * (tickMill / 1000.0);
             vehicleData.getCoordinates().changeCoordinatesByDistance(distance, Direction.Forward);
 
 

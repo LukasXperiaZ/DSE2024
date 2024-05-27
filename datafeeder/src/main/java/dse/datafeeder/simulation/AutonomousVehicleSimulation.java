@@ -61,7 +61,7 @@ public class AutonomousVehicleSimulation {
     // Start the simulation: This will generate a new executor running in a thread pool that simulates the autonomous car.
     public void startSimulation() {
         this.executor = Executors.newScheduledThreadPool(1);
-        executor.scheduleAtFixedRate(simulation, 0, 100, TimeUnit.MILLISECONDS);
+        executor.scheduleAtFixedRate(simulation, 0, tickMill, TimeUnit.MILLISECONDS);
     }
 
     // Transform the autonomous vehicle into a leading vehicle. It will now also send the target speed and lane.
@@ -131,6 +131,9 @@ public class AutonomousVehicleSimulation {
         // Increase the speed.
         instructions.add(new Instruction(121.0, 1, 200));
 
+        // Increase the speed further.
+        instructions.add(new Instruction(130.0, 1, 150));
+
         return instructions;
     }
 
@@ -184,7 +187,7 @@ public class AutonomousVehicleSimulation {
                 vehicleData.setSpeed(vehicleData.getSpeed() - SPEED_INCREASE_PER_TICK);
             }
             // Adjust the coordinates to go forward
-            double distance = (vehicleData.getSpeed() / 3.6) * 0.1;
+            double distance = (vehicleData.getSpeed() / 3.6) * (tickMill / 1000.0);
             vehicleData.getCoordinates().changeCoordinatesByDistance(distance, Direction.Forward);
 
 

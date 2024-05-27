@@ -1,6 +1,5 @@
 package dse.datafeeder;
 
-import dse.datafeeder.constants.Constants;
 import dse.datafeeder.constants.Direction;
 import dse.datafeeder.dto.Coordinates;
 import dse.datafeeder.dto.VehicleData;
@@ -43,16 +42,16 @@ class DatafeederApplicationTests {
         Coordinates coordinates = new Coordinates(START_AUT_FIRST_LANE_LON, FIRST_LANE_LAT);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Left);
-        assert(coordinates.getLatitude() < FIRST_LANE_LAT);
-        assert(coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
+        assert (coordinates.getLatitude() < FIRST_LANE_LAT);
+        assert (coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Right);
-        assert(coordinates.getLatitude() - FIRST_LANE_LAT < 0.000001);
-        assert(coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
+        assert (coordinates.getLatitude() - FIRST_LANE_LAT < 0.000001);
+        assert (coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
 
         coordinates.changeCoordinatesByDistance(1, Direction.Right);
-        assert(coordinates.getLatitude() > FIRST_LANE_LAT);
-        assert(coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
+        assert (coordinates.getLatitude() > FIRST_LANE_LAT);
+        assert (coordinates.getLongitude() == START_AUT_FIRST_LANE_LON);
     }
 
     @Test
@@ -62,6 +61,6 @@ class DatafeederApplicationTests {
 
         double distance = startNonVehicle.calculateDistanceTo(startAutVehicle);
         System.out.println(distance);
-        assert(distance > 250);
+        assert (distance > 250);
     }
 }
