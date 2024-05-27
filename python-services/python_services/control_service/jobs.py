@@ -79,7 +79,7 @@ def check_nearing_cars():
         # send info to the cars
         channel.basic_publish(exchange='control',
                               routing_key=car,
-                              body=json.dumps({"leadingVehicle": True,
+                              body=json.dumps({"isLeadingVehicle": True,
                                     "vinFV": fv,
                                     }))
 
@@ -110,7 +110,7 @@ def check_end_followme():
 
             channel.basic_publish(exchange='control',
                                   routing_key=state["lv"],
-                                  body=json.dumps({"leadingVehicle": False,
+                                  body=json.dumps({"isLeadingVehicle": False,
                                         "vinFV": None,
                                         }))
             channel.basic_publish(exchange='control',
