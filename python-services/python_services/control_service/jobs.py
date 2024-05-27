@@ -1,3 +1,4 @@
+import json
 import logging
 import threading
 import time
@@ -7,6 +8,7 @@ import schedule
 
 from python_services.common.config import FOLLOWME_END_TIME
 from python_services.control_service import database
+from python_services.control_service.inventory_client import get_car_base_data
 from python_services.control_service.rabbitmq import channel
 from python_services.control_service.beachcomb_client import get_cars_in_reach, get_vehicle_data
 
@@ -31,8 +33,19 @@ def check_nearing_cars():
     """
     Check if there are cars in reach and start a follow me session if possible.
     """
-    in_reach = get_cars_in_reach()
+    try:
+        in_reach = get_cars_in_reach()
+    except Exception as e:
+        logger.warning(f"Could not get cars in reach: {e}")
+        return
+
     for car, near_cars in in_reach.cars.items():
+        car_data = get_car_base_data(car)
+        if car_data is None or car_data.is_self_driving is False:
+            logger.info(f"Car {car} is not a self driving car. Skipping it.")
+            continue
+
+
         if database.state.find_one({"lv": car}) is not None or database.state.find_one({"fv": car}) is not None:
             logger.info(f"Car {car} is already in use. Skipping it as leading vehicle.")
             continue
@@ -49,7 +62,11 @@ def check_nearing_cars():
         # found pair of cars that is available
         # start a new follow me session
         logger.info(f"Starting follow me session between {car} and {fv}")
-        lv_data = get_vehicle_data(car)
+        try:
+            lv_data = get_vehicle_data(car)
+        except Exception as e:
+            logger.warning(f"Could not get vehicle data for {car}: {e}")
+            continue
 
         database.state.insert_one({"lv": car,
                                    "fv": fv,
@@ -62,13 +79,13 @@ def check_nearing_cars():
         # send info to the cars
         channel.basic_publish(exchange='control',
                               routing_key=car,
-                              body=str({"leadingVehicle": True,
+                              body=json.dumps({"leadingVehicle": True,
                                     "vinFV": fv,
                                     }))
 
         channel.basic_publish(exchange='control',
                               routing_key=fv,
-                              body=str({
+                              body=json.dumps({
                                   "usesFM": True,
                                     "vinLV": car,
                                     "targetLane": lv_data.targetLane,
@@ -93,12 +110,12 @@ def check_end_followme():
 
             channel.basic_publish(exchange='control',
                                   routing_key=state["lv"],
-                                  body=str({"leadingVehicle": False,
+                                  body=json.dumps({"leadingVehicle": False,
                                         "vinFV": None,
                                         }))
             channel.basic_publish(exchange='control',
                                   routing_key=state["fv"],
-                                  body=str({
+                                  body=json.dumps({
                                       "usesFM": False,
                                         "vinLV": None,
                                         "targetLane": None,
@@ -116,8 +133,13 @@ def check_end_followme():
 
 def check_followme_speeds():
     for state in database.state.find():
-        lv_data = get_vehicle_data(state["lv"])
-        fv_data = get_vehicle_data(state["fv"])
+        try:
+            lv_data = get_vehicle_data(state["lv"])
+            fv_data = get_vehicle_data(state["fv"])
+        except Exception as e:
+            logger.warning(f"Could not get vehicle data for {state['lv']} or {state['fv']}: {e}")
+            continue
+
         target_speed = lv_data.targetSpeed
         target_lane = lv_data.targetLane
         speed = fv_data.speed

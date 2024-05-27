@@ -15,7 +15,7 @@ connection = pika.BlockingConnection(
                               credentials=pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASS))
 )
 channel = connection.channel()
-channel.exchange_declare(exchange='control', exchange_type='topic')
+channel.exchange_declare(exchange='control', exchange_type='topic', durable=True)
 
 
 
@@ -65,7 +65,7 @@ class RabbitMQConsumer(threading.Thread):
 
                 self.channel.basic_publish(exchange='control',
                                       routing_key=state["fv"],
-                                      body=str({
+                                      body=json.dumps({
                                           "usesFM": True,
                                             "vinLV": state["lv"],
                                             "targetLane": data["targetLane"],
