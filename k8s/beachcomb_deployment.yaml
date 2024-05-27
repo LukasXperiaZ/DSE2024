@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: beachcomb
-          image: docker.io/library/beachcomb_service:latest
-          imagePullPolicy: Never
+          image: europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/beachcomb_service:latest
+          #imagePullPolicy: Never
           ports:
             - containerPort: 8002
           env:

@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: control-service
 spec:
+  type: NodePort
   selector:
     app: control
   ports:

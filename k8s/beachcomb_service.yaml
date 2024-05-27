@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: beachcomb-service
 spec:
+  type: NodePort
   selector:
     app: beachcomb
   ports:

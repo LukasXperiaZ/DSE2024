@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: inventory
-          image: docker.io/library/inventory_service:latest
-          imagePullPolicy: Never
+          image: europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/inventory_service:latest
+          #imagePullPolicy: Never
           ports:
             - containerPort: 8001
           env:

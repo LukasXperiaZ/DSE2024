@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dse2024-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /rabbitui
+            pathType: Prefix
+            backend:
+              service:
+                name: rabbitmq-ui-service
+                port:
+                  number: 15672
+                
