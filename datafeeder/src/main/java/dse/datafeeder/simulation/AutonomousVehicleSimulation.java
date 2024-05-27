@@ -29,8 +29,6 @@ import static dse.datafeeder.constants.Constants.*;
 
 public class AutonomousVehicleSimulation {
 
-    private final Logger logger = LoggerFactory.getLogger(AutonomousVehicleSimulation.class);
-
     // Example vin.
     private final String vin = "5YJ3E7EB7KF240393";
 
@@ -40,7 +38,6 @@ public class AutonomousVehicleSimulation {
     // A semaphore is necessary when this vehicle is made a leading vehicle.
     private final Semaphore vehicleSemaphore = new Semaphore(1);
 
-    private final List<Instruction> instructions;
     private final Iterator<Instruction> instructionIterator;
     private Instruction currentInstruction;
 
@@ -53,8 +50,8 @@ public class AutonomousVehicleSimulation {
         Coordinates startPoint = new Coordinates(START_AUT_FIRST_LANE_LON, FIRST_LANE_LAT);
         this.vehicleData = new VehicleData(vin, startPoint, 100.0, 1,
                 new Timestamp(System.currentTimeMillis()));
-        this.instructions = this.generateInstructions();
-        this.instructionIterator = this.instructions.iterator();
+        List<Instruction> instructions = this.generateInstructions();
+        this.instructionIterator = instructions.iterator();
         this.currentInstruction = this.instructionIterator.next();
     }
 

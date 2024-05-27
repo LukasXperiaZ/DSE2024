@@ -9,8 +9,6 @@ import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 @Service
 public class RabbitMq {
 
@@ -20,11 +18,10 @@ public class RabbitMq {
 
     private final RabbitTemplate rabbitTemplate;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public RabbitMq() {
-        RabbitTemplate rabbitTemplate = new RabbitTemplate(new CachingConnectionFactory());
-        this.rabbitTemplate = rabbitTemplate;
+        this.rabbitTemplate = new RabbitTemplate(new CachingConnectionFactory());
     }
 
     public void send(VehicleData vehicleData) {

@@ -3,7 +3,6 @@ package dse.datafeeder.rest;
 import dse.datafeeder.dto.FVState;
 import dse.datafeeder.dto.LVState;
 import dse.datafeeder.simulation.AutonomousVehicleSimulation;
-import dse.datafeeder.simulation.Instruction;
 import dse.datafeeder.simulation.NonAutonomousVehicleSimulation;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;

@@ -7,7 +7,6 @@ import dse.datafeeder.dto.LVState;
 import dse.datafeeder.rest.StateAPI;
 import dse.datafeeder.simulation.AutonomousVehicleSimulation;
 import dse.datafeeder.simulation.NonAutonomousVehicleSimulation;
-import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

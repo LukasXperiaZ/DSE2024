@@ -21,7 +21,7 @@ class DatafeederApplicationTests {
     @Test
     void testVehicleDataCreation() {
         try {
-            VehicleData vehicleData = new VehicleData("SB164ABN1PE082986", new Coordinates(1, 2), 100.0, 1, new Timestamp(System.currentTimeMillis()));
+            new VehicleData("SB164ABN1PE082986", new Coordinates(1, 2), 100.0, 1, new Timestamp(System.currentTimeMillis()));
         } catch (Exception e) {
             assert false;
         }

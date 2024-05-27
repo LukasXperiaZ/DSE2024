@@ -26,12 +26,10 @@ import static dse.datafeeder.constants.Constants.*;
  */
 public class NonAutonomousVehicleSimulation {
 
-    private final Logger logger = LoggerFactory.getLogger(NonAutonomousVehicleSimulation.class);
-
     // Example vin.
     private final String vin = "XP7VGCEJXPB204655";
 
-    private VehicleData vehicleData;
+    private final VehicleData vehicleData;
 
     // The instruction that should be done next.
     private Instruction nextInstruction;
