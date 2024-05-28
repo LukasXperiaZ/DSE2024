@@ -1,3 +1,3 @@
 export class Config {
-  static readonly localDevelopment: boolean = true;
+  static readonly localDevelopment: boolean = false;
 }
