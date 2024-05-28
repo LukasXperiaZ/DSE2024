@@ -30,6 +30,14 @@ spec:
                 name: control-service
                 port:
                   number: 8002
+          - path: /dashboard
+            pathType: Prefix
+            backend:
+              service:
+                name: dashboard-service
+                port:
+                  number: 4200
+
 
 #    - host: rabbit.example
 #      http:
