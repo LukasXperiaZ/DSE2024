@@ -31,3 +31,7 @@ async def get_follow_me_status():
             "start_time": state["followme_start"],
         })
     return follow_me_vehicles
+
+@router.get("/health")
+async def health():
+    return {"status": "ok"}
