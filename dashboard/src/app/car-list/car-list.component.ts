@@ -8,6 +8,7 @@ import {MatIcon} from "@angular/material/icon";
 import {MatDivider} from "@angular/material/divider";
 import {MatGridList, MatGridTile, MatGridTileText} from "@angular/material/grid-list";
 import {CarSvgComponent} from "../car-svg/car-svg.component";
+import {NavigationComponent} from "../navigation/navigation.component";
 
 @Component({
   selector: 'app-car-list',
@@ -26,16 +27,17 @@ import {CarSvgComponent} from "../car-svg/car-svg.component";
     MatGridTile,
     MatListItemLine,
     CarSvgComponent,
-    MatGridTileText
+    MatGridTileText,
+    NavigationComponent
   ],
   templateUrl: './car-list.component.html',
   styleUrl: './car-list.component.css'
 })
 export class CarListComponent implements OnInit {
 
-  cars: Car[] | undefined;
+  title = 'Live View';
 
-  enable = false;
+  cars: Car[] | undefined;
 
   constructor(private inventoryService: InventoryService) {
   }
