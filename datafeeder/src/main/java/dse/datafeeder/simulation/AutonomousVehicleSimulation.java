@@ -127,7 +127,7 @@ public class AutonomousVehicleSimulation {
         instructions.add(new Instruction(121.0, 1, 200));
 
         // Increase the speed further.
-        instructions.add(new Instruction(130.0, 1, 150));
+        instructions.add(new Instruction(150.0, 1, 150));
 
         return instructions;
     }

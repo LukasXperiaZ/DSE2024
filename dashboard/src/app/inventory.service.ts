@@ -2,15 +2,22 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Car} from "../dto/Car";
 import {catchError, throwError} from "rxjs";
+import {Config} from "../config";
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService {
 
-  url: string = "http://localhost:8001/inventory";
+  url: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if (Config.localDevelopment) {
+      this.url = "http://localhost:8001/inventory";
+    } else {
+      this.url = window.location.host + "/inventory";
+    }
+  }
 
   getCars() {
     return this.http.get<Car[]>(this.url + "/cars")

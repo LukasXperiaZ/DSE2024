@@ -3,15 +3,22 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {EventLog} from "../dto/EventLog";
 import {catchError, throwError} from "rxjs";
 import {FmStatus} from "../dto/FmStatus";
+import {Config} from "../config";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ControlService {
 
-  url: string = "http://localhost:8002/control";
+  url: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if (Config.localDevelopment) {
+      this.url = "http://localhost:8002/control";
+    } else {
+      this.url = window.location.host + "/control";
+    }
+  }
 
   getEventLogs() {
     return this.http.get<EventLog[]>(this.url + "/eventlog")
