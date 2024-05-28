@@ -59,6 +59,10 @@ export class EventlogComponent implements AfterViewInit, OnInit {
       });
   }
 
+  printDate(date: string) {
+    return new Date(date).toLocaleString();
+  }
+
 }
 
 // Just for testing purposes.

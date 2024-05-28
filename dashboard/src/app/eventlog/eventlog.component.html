@@ -36,7 +36,7 @@
     <!-- Timestamp Column -->
     <ng-container matColumnDef="timestamp">
       <th mat-header-cell *matHeaderCellDef> Timestamp</th>
-      <td mat-cell *matCellDef="let element"> {{ element.timestamp.$date.toLocaleString() }}</td>
+      <td mat-cell *matCellDef="let element"> {{ printDate(element.timestamp.$date)}}</td>
     </ng-container>
 
     <!-- LV Column -->
