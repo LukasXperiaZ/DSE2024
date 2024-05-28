@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {EventLog} from "../dto/EventLog";
 import {catchError, throwError} from "rxjs";
+import {FmStatus} from "../dto/FmStatus";
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,13 @@ export class ControlService {
 
   getEventLogs() {
     return this.http.get<EventLog[]>(this.url + "/eventlog")
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getFollowMeStatus() {
+    return this.http.get<FmStatus[]>(this.url + "/follow_me_status")
       .pipe(
         catchError(this.handleError)
       )

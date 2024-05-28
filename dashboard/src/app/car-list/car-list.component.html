@@ -2,8 +2,8 @@
 
 <app-navigation></app-navigation>
 
-<mat-grid-list cols="12" rowHeight="800px" gutterSize="10px" class="gridList">
-  <mat-grid-tile colspan="3" class="lightblue">
+<mat-grid-list cols="12" rowHeight="400px" gutterSize="10px" class="gridList">
+  <mat-grid-tile colspan="3" rowspan="1" class="lightblue">
     <button mat-icon-button color="primary" aria-label="reload" (click)="getCars()">
       <mat-icon>refresh</mat-icon>
     </button>
@@ -19,15 +19,46 @@
     </mat-list>
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="2" class="meadow">
+  <mat-grid-tile colspan="2" rowspan="2" class="meadow">
     <img class="rotate90" height="1000" src="https://cdn.pixabay.com/photo/2016/11/29/02/25/forest-1866837_1280.jpg">
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="5">
+  <mat-grid-tile colspan="5" rowspan="2">
     <app-car-svg *ngIf="cars" class="height800 width640" [carList]="cars"></app-car-svg>
   </mat-grid-tile>
 
-  <mat-grid-tile colspan="2" class="meadow">
+  <mat-grid-tile colspan="2" rowspan="2" class="meadow">
     <img class="rotate90" height="1000" src="https://cdn.pixabay.com/photo/2016/11/29/02/25/forest-1866837_1280.jpg">
+  </mat-grid-tile>
+
+  <mat-grid-tile colspan="3" rowspan="1" class="lightblue">
+    <mat-list>
+      <mat-list-item>
+        <h3>Current Status:</h3>
+      </mat-list-item>
+
+      <div *ngIf="status.length < 1">
+        <mat-list-item>
+          <i>No vehicle in FM mode.</i>
+        </mat-list-item>
+      </div>
+
+      <div *ngIf="status.length > 0">
+        <mat-list-item>
+          <p><i>Vehicles in FM mode.</i></p>
+        </mat-list-item>
+        <mat-list-item>
+          LV: {{ status[0].lv }}
+        </mat-list-item>
+        <mat-list-item>
+          FV: {{ status[0].fv }}
+        </mat-list-item>
+        <mat-list-item>
+          Start time: {{ status[0].start_time }}
+        </mat-list-item>
+      </div>
+
+    </mat-list>
+
   </mat-grid-tile>
 </mat-grid-list>

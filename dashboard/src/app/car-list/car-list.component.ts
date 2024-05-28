@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {InventoryService} from "../inventory.service";
 import {Car} from "../../dto/Car";
 import {MatList, MatListItem, MatListItemLine, MatListOption, MatSelectionList} from "@angular/material/list";
@@ -9,6 +9,17 @@ import {MatDivider} from "@angular/material/divider";
 import {MatGridList, MatGridTile, MatGridTileText} from "@angular/material/grid-list";
 import {CarSvgComponent} from "../car-svg/car-svg.component";
 import {NavigationComponent} from "../navigation/navigation.component";
+import {ControlService} from "../control.service";
+import {FmStatus} from "../../dto/FmStatus";
+import {
+  MatCell,
+  MatCellDef,
+  MatColumnDef,
+  MatHeaderCell,
+  MatHeaderCellDef,
+  MatTable,
+  MatTableDataSource
+} from "@angular/material/table";
 
 @Component({
   selector: 'app-car-list',
@@ -28,26 +39,49 @@ import {NavigationComponent} from "../navigation/navigation.component";
     MatListItemLine,
     CarSvgComponent,
     MatGridTileText,
-    NavigationComponent
+    NavigationComponent,
+    MatTable,
+    MatHeaderCell,
+    MatHeaderCellDef,
+    MatCellDef,
+    MatCell,
+    MatColumnDef
   ],
   templateUrl: './car-list.component.html',
   styleUrl: './car-list.component.css'
 })
-export class CarListComponent implements OnInit {
+export class CarListComponent implements OnInit, OnDestroy {
 
   title = 'Live View';
 
   cars: Car[] | undefined;
 
-  constructor(private inventoryService: InventoryService) {
+  status: FmStatus[] = [];
+  intervalId: number = -2;
+
+  constructor(private inventoryService: InventoryService, private controlService: ControlService) {
   }
 
   ngOnInit() {
     this.getCars();
+
+    setInterval(this.getFollowMeStatus.bind(this), 1000);
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.intervalId)
   }
 
   getCars() {
     this.inventoryService.getCars()
       .subscribe(cars => this.cars = cars)
+  }
+
+  getFollowMeStatus() {
+    this.controlService.getFollowMeStatus()
+      .subscribe(fmStatus => {
+        this.status = fmStatus;
+        console.log(fmStatus)
+      })
   }
 }
