@@ -20,6 +20,14 @@ spec:
           # imagePullPolicy: Never
           ports:
             - containerPort: 8002
+          readinessProbe:
+            httpGet:
+              path: /control/health
+              port: 8002
+          livenessProbe:
+            httpGet:
+              path: /control/health
+              port: 8002
           env:
             - name: MONGO_URI
               value: "mongodb+srv://dse24:HaB1glbuEZRkO9kw@cluster0.cjccyax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
