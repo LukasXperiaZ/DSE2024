@@ -19,7 +19,15 @@ spec:
           image: europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/beachcomb_service:latest
           #imagePullPolicy: Never
           ports:
-            - containerPort: 8002
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /beachcomb/health
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /beachcomb/health
+              port: 8080
           env:
             - name: MONGO_URI
               value: "mongodb://dse24:HaB1glbuEZRkO9kw@cluster0.cjccyax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"

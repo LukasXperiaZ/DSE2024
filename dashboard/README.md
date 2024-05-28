@@ -3,6 +3,12 @@ Important
 There is sometimes a visual bug (idk the real reason behind it)
 -> Simple fix: reload the browser
 
+# publish 
+❯ docker build -t dashboard .
+❯ docker tag dashboard europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest
+❯ docker push europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest
+
+
 # Dashboard
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.5.

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-deployment
+  labels:
+    app: dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    spec:
+      containers:
+        - name: dashboard
+          image: europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest
+          # imagePullPolicy: Never
+          ports:
+            - containerPort: 4200
+          readinessProbe:
+            httpGet:
+              path: /dashboard
+              port: 4200
+          livenessProbe:
+            httpGet:
+              path: /dashboard
+              port: 4200
