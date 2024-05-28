@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -46,6 +47,10 @@ public class BeachcombServiceResource {
         logger.info("Returning vehicle with vin: " + vin);
         return beachcombService.getVehicleLocationByVin(vin);
     }
+
+    @GetMapping("/health")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void healthCheck() {}
 
     @GetMapping("/test2")
     public void test2() {
