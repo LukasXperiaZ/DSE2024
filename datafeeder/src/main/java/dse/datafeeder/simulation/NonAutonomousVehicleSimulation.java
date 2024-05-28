@@ -149,9 +149,9 @@ public class NonAutonomousVehicleSimulation {
             // It can adjust 1km/h per tick
             if (vehicleData.getSpeed() < instruction.getSpeed()) {
                 // The vehicle has to go faster.
-                if (instruction.getSpeed() < 121.2 && instruction.getSpeed() > 120.8) {
+                if (instruction.getSpeed() < 145.0 && instruction.getSpeed() > 135.0) {
                     // This "bug" is intentional to satisfy the simulation scenario:
-                    // I.e. at the last speed change (speeding up to 121.0 km/h), the FV will not adjust its speed to
+                    // I.e. at the last speed change (speeding up to 141.0 km/h), the FV will not adjust its speed to
                     // the target speed.
                     behaveBad = true;
                 } else if (!behaveBad) {

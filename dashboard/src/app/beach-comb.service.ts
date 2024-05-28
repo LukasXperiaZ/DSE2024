@@ -2,15 +2,22 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {VehicleData} from "../dto/VehicleData";
 import {catchError, throwError} from "rxjs";
+import {Config} from "../config";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BeachCombService {
 
-  url: string = "http://localhost:8000/beachcomb/vehicles/";
+  url: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    if (Config.localDevelopment) {
+      this.url = "http://localhost:8000/beachcomb/vehicles/";
+    } else {
+      this.url = window.location.host + "/beachcomb/vehicles/";
+    }
+  }
 
   getVehicleData(vin: string) {
     return this.http.get<VehicleData>(this.url + vin)

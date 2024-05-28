@@ -80,6 +80,9 @@ public class StateReceiver {
                 logger.info("Vehicle entered the follow mode!");
             } else {
                 // The vehicle stays in follow mode.
+                if (fvState.getTargetSpeed() == 141.0) {
+                    logger.warn("Vehicle received target speed {}", fvState.getTargetSpeed());
+                }
                 nonAutonomousVehicleSimulation.stayInFM(fvState);
                 logger.trace("Vehicle stays in follow mode.");
             }

@@ -1,26 +1,34 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Car} from "../dto/Car";
+import {EventLog} from "../dto/EventLog";
 import {catchError, throwError} from "rxjs";
+import {FmStatus} from "../dto/FmStatus";
 import {Config} from "../config";
 
 @Injectable({
   providedIn: 'root'
 })
-export class InventoryService {
+export class ControlService {
 
   url: string;
 
   constructor(private http: HttpClient) {
     if (Config.localDevelopment) {
-      this.url = "http://localhost:8001/inventory";
+      this.url = "http://localhost:8002/control";
     } else {
-      this.url = window.location.host + "/inventory";
+      this.url = window.location.host + "/control";
     }
   }
 
-  getCars() {
-    return this.http.get<Car[]>(this.url + "/cars")
+  getEventLogs() {
+    return this.http.get<EventLog[]>(this.url + "/eventlog")
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  getFollowMeStatus() {
+    return this.http.get<FmStatus[]>(this.url + "/follow_me_status")
       .pipe(
         catchError(this.handleError)
       )

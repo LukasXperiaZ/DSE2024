@@ -21,3 +21,13 @@
 .rotate90 {
   transform: rotate(90deg);
 }
+
+.center {
+  margin: auto;
+  width: 50%;
+  padding: 20px;
+}
+
+.center-text {
+  text-align: center;
+}

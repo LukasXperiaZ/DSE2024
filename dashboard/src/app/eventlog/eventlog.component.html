@@ -1,0 +1,90 @@
+<h1 class="center center-text">{{ title }}</h1>
+
+<app-navigation></app-navigation>
+
+<div>
+  <button
+    mat-icon-button
+    color="primary"
+    aria-label="reload"
+    (click)="getEventLogs()"
+  >
+   <mat-icon>refresh</mat-icon>
+  </button>
+</div>
+
+<div class="center">
+  <mat-spinner class="spinner" [diameter]="70" *ngIf="loading"></mat-spinner>
+</div>
+
+
+<div class="mat-elevation-z8" *ngIf="dataSource && !loading">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="_id">
+      <th mat-header-cell *matHeaderCellDef> ID</th>
+      <td mat-cell *matCellDef="let element"> {{ element._id.$oid }}</td>
+    </ng-container>
+
+    <!-- Type Column -->
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type</th>
+      <td mat-cell *matCellDef="let element"> {{ element.type }}</td>
+    </ng-container>
+
+    <!-- Timestamp Column -->
+    <ng-container matColumnDef="timestamp">
+      <th mat-header-cell *matHeaderCellDef> Timestamp</th>
+      <td mat-cell *matCellDef="let element"> {{ printDate(element.timestamp.$date)}}</td>
+    </ng-container>
+
+    <!-- LV Column -->
+    <ng-container matColumnDef="lv">
+      <th mat-header-cell *matHeaderCellDef> LV</th>
+      <td mat-cell *matCellDef="let element"> {{ element.lv }}</td>
+    </ng-container>
+
+    <!-- FV Column -->
+    <ng-container matColumnDef="fv">
+      <th mat-header-cell *matHeaderCellDef> FV</th>
+      <td mat-cell *matCellDef="let element"> {{ element.fv }}</td>
+    </ng-container>
+
+    <!-- Message Column -->
+    <ng-container matColumnDef="message">
+      <th mat-header-cell *matHeaderCellDef> Message</th>
+      <td mat-cell *matCellDef="let element"> {{ element.message }}</td>
+    </ng-container>
+
+    <!-- Successive check fails -->
+    <ng-container matColumnDef="successive_check_fails">
+      <th mat-header-cell *matHeaderCellDef> succ. fails</th>
+      <td mat-cell *matCellDef="let element"> {{ element.successive_check_fails }}</td>
+    </ng-container>
+
+    <!-- Speed mismatch -->
+    <ng-container matColumnDef="speed_mismatch">
+      <th mat-header-cell *matHeaderCellDef> speed mismatch</th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="element.speed_mismatch">
+          {{ element.speed_mismatch }} km/h
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- Lane mismatch -->
+    <ng-container matColumnDef="lane_mismatch">
+      <th mat-header-cell *matHeaderCellDef> lane mismatch</th>
+      <td mat-cell *matCellDef="let element"> {{ element.lane_mismatch }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[10, 20, 30]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
