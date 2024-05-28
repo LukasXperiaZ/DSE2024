@@ -130,6 +130,7 @@ export class CarSvgComponent implements OnInit, OnDestroy {
   }
   // ----- end -----
 
+  // Just for testing purposes.
   getVehicleDataTest() {
     let vehicle = new VehicleData("XP7VGCEJXPB204655", new Coordinates(48.198141, Constants.FIRST_LANE_LAT), 100);
     let autonomousVehicle = new VehicleData("5YJ3E7EB7KF240393", new Coordinates(48.199064, Constants.FIRST_LANE_LAT), 110);

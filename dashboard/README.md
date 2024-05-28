@@ -1,8 +1,3 @@
-Important
-===
-There is sometimes a visual bug (idk the real reason behind it)
--> Simple fix: reload the browser
-
 # publish 
 ❯ docker build -t dashboard .
 ❯ docker tag dashboard europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest

@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {InventoryService} from "../inventory.service";
 import {Car} from "../../dto/Car";
 import {MatList, MatListItem, MatListItemLine, MatListOption, MatSelectionList} from "@angular/material/list";
-import {NgForOf, NgIf} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
 import {MatDivider} from "@angular/material/divider";
@@ -18,7 +18,6 @@ import {
   MatHeaderCell,
   MatHeaderCellDef,
   MatTable,
-  MatTableDataSource
 } from "@angular/material/table";
 
 @Component({
@@ -45,7 +44,8 @@ import {
     MatHeaderCellDef,
     MatCellDef,
     MatCell,
-    MatColumnDef
+    MatColumnDef,
+    NgOptimizedImage
   ],
   templateUrl: './car-list.component.html',
   styleUrl: './car-list.component.css'
