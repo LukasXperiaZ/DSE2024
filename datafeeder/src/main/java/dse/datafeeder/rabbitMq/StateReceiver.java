@@ -69,7 +69,7 @@ public class StateReceiver {
         try {
             fvState = objectMapper.readValue(fvStateJson, FVState.class);
         } catch (JsonProcessingException e) {
-            logger.error("Error parsing LVState: {}", e.getMessage());
+            logger.error("Error parsing FVState: {}", e.getMessage());
             return;
         }
         if (fvState.getUsesFM()) {
