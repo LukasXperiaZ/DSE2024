@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dse.datafeeder.dto.FVState;
 import dse.datafeeder.dto.LVState;
-import dse.datafeeder.rest.StateAPI;
 import dse.datafeeder.simulation.AutonomousVehicleSimulation;
 import dse.datafeeder.simulation.NonAutonomousVehicleSimulation;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StateReceiver {
-    private final Logger logger = LoggerFactory.getLogger(StateAPI.class);
+    private final Logger logger = LoggerFactory.getLogger(StateReceiver.class);
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
