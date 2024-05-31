@@ -24,9 +24,7 @@ import org.springframework.data.mongodb.core.query.NearQuery;
 import org.springframework.stereotype.Component;
 
 import javax.ejb.Singleton;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Singleton
 @Component
@@ -77,10 +75,24 @@ public class BeachcombService {
     }
 
     public List<VehicleLocation> findVehiclesNearPoint(String vin, double longitude, double latitude, double maxDistance) {
+
+        Date now = new Date();
+        Calendar calendar = Calendar.getInstance();
+
+        // Calculate one second before the current time
+        calendar.setTime(now);
+        calendar.add(Calendar.SECOND, -5);
+        Date oneSecondBefore = calendar.getTime();
+
+        // Calculate one second after the current time
+        calendar.setTime(now);
+        calendar.add(Calendar.SECOND, 5);
+        Date oneSecondAfter = calendar.getTime();
+
         // Step 1: Aggregate the most recent locations
         TypedAggregation<VehicleLocation> aggregation = Aggregation.newAggregation(
                 VehicleLocation.class,
-                Aggregation.match(Criteria.where("vin").ne(vin)),
+                Aggregation.match(Criteria.where("vin").ne(vin).and("timestamp").gte(oneSecondBefore).lte(oneSecondAfter)),
                 Aggregation.sort(Sort.by(Sort.Order.desc("timestamp"))),
                 Aggregation.group("vin")
                         .first("location").as("location")
@@ -89,21 +101,21 @@ public class BeachcombService {
         );
 
         var recentLocations = mongoTemplate.aggregate(aggregation, VehicleLocation.class, Document.class);
-
+        if (recentLocations.getMappedResults().isEmpty()) return new ArrayList<>();
         // Step 2: Create a temporary collection and insert the results
-        mongoTemplate.dropCollection("recentVehicleLocations");
-        mongoTemplate.createCollection("recentVehicleLocations");
-        mongoTemplate.indexOps("recentVehicleLocations")
+        String collectionName = "recentVehicleLocations_" + UUID.randomUUID();
+        mongoTemplate.createCollection(collectionName);
+        mongoTemplate.indexOps(collectionName)
                 .ensureIndex(new GeospatialIndex("location").typed(GeoSpatialIndexType.GEO_2DSPHERE));
-        mongoTemplate.getCollection("recentVehicleLocations").insertMany(recentLocations.getMappedResults());
+        mongoTemplate.getCollection(collectionName).insertMany(recentLocations.getMappedResults());
 
         // Step 3: Perform the geoNear query on the recent locations
         NearQuery nearQuery = NearQuery.near(longitude, latitude, Metrics.KILOMETERS)
                 .maxDistance(maxDistance);
 
-        var geoNearResults = mongoTemplate.geoNear(nearQuery, VehicleLocation.class, "recentVehicleLocations");
+        var geoNearResults = mongoTemplate.geoNear(nearQuery, VehicleLocation.class, collectionName);
 
-        mongoTemplate.dropCollection("recentVehicleLocations");
+        mongoTemplate.dropCollection(collectionName);
 
         return geoNearResults.getContent().stream().map(GeoResult::getContent).toList();
     }
