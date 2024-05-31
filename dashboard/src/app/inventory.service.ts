@@ -8,6 +8,7 @@ import {Config} from "../config";
   providedIn: 'root'
 })
 export class InventoryService {
+  // Class responsible for the communication with the InventoryService.
 
   url: string;
 

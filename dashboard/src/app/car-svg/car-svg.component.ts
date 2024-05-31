@@ -16,6 +16,8 @@ import {BeachCombService} from "../beach-comb.service";
   styleUrl: './car-svg.component.css'
 })
 export class CarSvgComponent implements OnInit, OnDestroy {
+  // Responsible for displaying the current situation of the vehicles on a 3-way motor highway.
+
   @Input() carList!: Car[];
   vehicleData: VehicleData[] = [];
 

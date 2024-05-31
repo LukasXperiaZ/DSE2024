@@ -51,6 +51,7 @@ import {
   styleUrl: './car-list.component.css'
 })
 export class CarListComponent implements OnInit, OnDestroy {
+  // Responsible for visualizing live view.
 
   title = 'Live View';
 

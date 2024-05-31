@@ -9,6 +9,7 @@ import {Config} from "../config";
   providedIn: 'root'
 })
 export class ControlService {
+  // Class responsible for the communication with the ControlService.
 
   url: string;
 

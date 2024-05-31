@@ -1,8 +1,10 @@
-# publish 
-❯ docker build -t dashboard .
-❯ docker tag dashboard europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest
-❯ docker push europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest
+# Publish 
+* `docker build -t dashboard .`
+* `docker tag dashboard europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest`
+* `docker push europe-west3-docker.pkg.dev/dse24-group-12/dse-repo/dashboard:latest`
 
+# Local development
+Set the variable `localDevelopment` in `src/config.ts` to true.
 
 # Dashboard
 

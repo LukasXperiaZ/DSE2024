@@ -25,6 +25,8 @@ import {MatProgressSpinner} from "@angular/material/progress-spinner";
   styleUrl: './eventlog.component.css'
 })
 export class EventlogComponent implements AfterViewInit, OnInit {
+  // Responsible for visualizing the EventLogs.
+
   title = 'Event Log'
   displayedColumns: string[] = ['_id', 'type', 'timestamp', 'lv', 'fv', 'message', 'successive_check_fails', 'speed_mismatch', 'lane_mismatch'];
   dataSource: MatTableDataSource<EventLog> = new MatTableDataSource<EventLog>();
@@ -65,7 +67,7 @@ export class EventlogComponent implements AfterViewInit, OnInit {
 
 }
 
-// Just for testing purposes.
+// Just for testing purposes. Can be used while developing / improving the dashboard.
 const ELEMENT_DATA: EventLog[] = [
   {
     _id: {
