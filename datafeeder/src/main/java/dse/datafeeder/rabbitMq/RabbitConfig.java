@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitConfig {
 
+    // Configuration for the RabbitMQ connection.
+
     public static final String EXCHANGE_NAME = "control";
     private final Logger logger = LoggerFactory.getLogger(RabbitConfig.class);
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RabbitMq {
+    // Responsible for sending position data.
 
     private final Logger logger = LoggerFactory.getLogger(RabbitMq.class);
 

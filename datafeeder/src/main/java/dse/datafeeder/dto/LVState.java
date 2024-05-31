@@ -1,5 +1,8 @@
 package dse.datafeeder.dto;
 
+/*
+ * This class represents the state of a Leading Vehicle.
+ */
 public class LVState {
     private boolean isLeadingVehicle;
     private String vinFV;

@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestClient;
 
 public class InventoryClient {
+    // Responsible for registering to the inventory service.
 
     private final Logger logger = LoggerFactory.getLogger(InventoryClient.class);
 

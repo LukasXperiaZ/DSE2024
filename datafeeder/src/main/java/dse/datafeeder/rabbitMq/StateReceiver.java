@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class StateReceiver {
+    // Responsible for receiving States for the LV and FV.
+
     private final Logger logger = LoggerFactory.getLogger(StateReceiver.class);
     ObjectMapper objectMapper = new ObjectMapper();
 
