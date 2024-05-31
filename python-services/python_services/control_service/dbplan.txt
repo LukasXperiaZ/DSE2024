@@ -1,0 +1,24 @@
+# eventlog
+datetime: 2021-07-07 14:00:00
+_id: 60e4b1e0e4b0b3b3b3b3b3b3
+type: startFollowMe
+involvedcars: ['car1', 'car2']
+
+
+# state
+followme_start: datetime
+lv: vin
+fv: vin
+soll_spur: int
+soll_geschw: int
+successive_check_fails: int
+
+{
+"vin": "vin1",
+"location": [0.0, 0.1],
+"speed": 40.0,
+"lane": 1,
+"timestamp": "2021-07-07 14:00:00",
+"targetSpeed": 40.0,
+"targetLane": 55,
+}

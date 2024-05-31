@@ -15,9 +15,11 @@ logging.config.dictConfig(LOGGING_CONFIG)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # start rabbitmq consumer and job scheduler
     stop_run_continuously = run_continuously()
     consumer.start()
     yield
+    # stop rabbitmq consumer and job scheduler
     stop_run_continuously.set()
     consumer.stop()
 
@@ -32,4 +34,5 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
+    # start the rest api
     uvicorn.run(app, host="0.0.0.0", port=8002, log_config=LOGGING_CONFIG)

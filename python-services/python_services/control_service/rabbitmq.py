@@ -9,6 +9,7 @@ from python_services.control_service import database
 
 logger = logging.getLogger(__name__)
 
+# initialize rabbitmq connection for the main thread
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host=RABBITMQ_HOST,
                               port=RABBITMQ_PORT,
@@ -19,10 +20,10 @@ channel.exchange_declare(exchange='control', exchange_type='topic', durable=True
 
 
 
-
-
-
 class RabbitMQConsumer(threading.Thread):
+    """
+    RabbitMQ consumer listening to the positions in a separate thread
+    """
 
     def __init__(self):
         threading.Thread.__init__(self)
@@ -31,6 +32,11 @@ class RabbitMQConsumer(threading.Thread):
 
 
     def run(self):
+        """
+        start consumer in a separate thread
+        """
+
+        # init connection for consumer thread
         self.connection = pika.BlockingConnection(
             pika.ConnectionParameters(host=RABBITMQ_HOST,
                                       port=RABBITMQ_PORT,
@@ -48,21 +54,24 @@ class RabbitMQConsumer(threading.Thread):
         self.channel.start_consuming()
 
     def callback(self, ch, method, properties, body):
-        # gets updates from lvs and distributes the targets to the fvs
+        """
+        gets updates from lvs and distributes the targets to the fvs
+        """
         try:
             data = json.loads(body)
         except json.JSONDecodeError:
             logger.error(f"Could not parse message")
             return
-        # check if data contains key "targetSpeed"
+        # check if data contains key "targetSpeed" => then it is an update from a lv
         if "targetSpeed" in data:
-            # this is an update from a lv
+            # check if there is an active follow me session
             state = database.state.find_one({"lv": data["vin"]})
             if state is None:
                 logger.debug(f"Vin {data['vin']} is not a leading vehicle")
             if state is not None:
+                # update the target speed and lane of the follow me session
                 database.state.update_one({"lv": data["vin"]}, {"$set": {"target_speed": data["targetSpeed"], "target_lane": data["targetLane"]}})
-
+                # send the new target to the following vehicle
                 self.channel.basic_publish(exchange='control',
                                       routing_key=state["fv"],
                                       body=json.dumps({

@@ -9,6 +9,11 @@ from python_services.common.models import CarBase
 logger = logging.getLogger(__name__)
 
 def get_car_base_data(vin):
+    """
+    Get the base data for a given vin
+    :param vin: vin of the car
+    :return: basedata
+    """
     url = f"{INVENTORY_SERVICE_URL}/inventory/car/{vin}"
 
     # Make the GET request
