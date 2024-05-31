@@ -22,9 +22,9 @@ public class BeachcombServiceResource {
     Logger logger = LoggerFactory.getLogger(BeachcombServiceResource.class);
     @Autowired
     private BeachcombService beachcombService;
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
-    private ObjectMapper objectMapper = new ObjectMapper();
+//    @Autowired
+//    private RabbitTemplate rabbitTemplate;
+//    private ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private VehicleRepository vehicleRepository;
 
@@ -51,7 +51,7 @@ public class BeachcombServiceResource {
     @GetMapping("/health")
     @ResponseStatus(value = HttpStatus.OK)
     public void healthCheck() {}
-
+/*
     @GetMapping("/test2")
     public void test2() {
         var allVehicles = beachcombService.findVehiclesNearPoint("123", 1.0, 2.0, 0.2);
@@ -78,5 +78,5 @@ public class BeachcombServiceResource {
 
         rabbitTemplate.convertAndSend("position", "", jsonString);
     }
-
+*/
 }

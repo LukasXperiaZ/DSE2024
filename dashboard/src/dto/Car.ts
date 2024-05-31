@@ -1,4 +1,5 @@
 export class Car {
+  // Represents a car.
   oem: string;
   model: string;
   vin: string;

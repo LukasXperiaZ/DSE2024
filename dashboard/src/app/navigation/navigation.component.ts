@@ -13,5 +13,5 @@ import {RouterLink} from "@angular/router";
   styleUrl: './navigation.component.css'
 })
 export class NavigationComponent {
-
+  // Used for navigating between the live view and the EventLog.
 }

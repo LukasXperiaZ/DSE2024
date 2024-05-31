@@ -8,6 +8,7 @@ import {Config} from "../config";
   providedIn: 'root'
 })
 export class BeachCombService {
+  // Class responsible for the communication with the BeachCombService.
 
   url: string;
 

@@ -7,6 +7,7 @@ import dse.datafeeder.constants.Direction;
  * This class represents GPS coordinates of a car.
  */
 public class Coordinates {
+
     private double longitude;       // Increases if we drive straight forwards
     private double latitude;        // Decreases if we drive left, increases if we drive right
 

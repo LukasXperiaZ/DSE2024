@@ -1,4 +1,5 @@
 export class EventLog {
+  // Represents an EventLog
   _id: Id;
   type: Type;
   timestamp: EventDate;
