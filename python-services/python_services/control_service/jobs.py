@@ -6,7 +6,7 @@ import datetime
 
 import schedule
 
-from python_services.common.config import FOLLOWME_END_TIME
+from python_services.common.config import FOLLOWME_END_TIME, FOLLOWME_SPEED_WARN_TOLERANCE, FOLLOWME_SPEED_END_TOLERANCE
 from python_services.control_service import database
 from python_services.control_service.inventory_client import get_car_base_data
 from python_services.control_service.rabbitmq import channel
@@ -106,30 +106,33 @@ def check_end_followme():
     for state in database.state.find():
         if state["followme_start"] + datetime.timedelta(seconds=FOLLOWME_END_TIME) < datetime.datetime.now():
             # end follow me session
-            logger.info(f"Ending follow me session between {state['lv']} and {state['fv']}")
+            end_followme(state["lv"], state["fv"], state["_id"])
 
-            channel.basic_publish(exchange='control',
-                                  routing_key=state["lv"],
-                                  body=json.dumps({"isLeadingVehicle": False,
-                                        "vinFV": None,
-                                        }))
-            channel.basic_publish(exchange='control',
-                                  routing_key=state["fv"],
-                                  body=json.dumps({
-                                      "usesFM": False,
-                                        "vinLV": None,
-                                        "targetLane": None,
-                                        "targetSpeed": None
-                                  }))
 
-            database.eventlog.insert_one({
-                "type": "followme_end",
-                "timestamp": datetime.datetime.now(),
-                "lv": state["lv"],
-                "fv": state["fv"]
-            })
-            database.state.delete_one({"_id": state["_id"]})
+def end_followme(lv, fv, state_id):
+    logger.info(f"Ending follow me session between {lv} and {fv}")
 
+    channel.basic_publish(exchange='control',
+                          routing_key=lv,
+                          body=json.dumps({"isLeadingVehicle": False,
+                                           "vinFV": None,
+                                           }))
+    channel.basic_publish(exchange='control',
+                          routing_key=fv,
+                          body=json.dumps({
+                              "usesFM": False,
+                              "vinLV": None,
+                              "targetLane": None,
+                              "targetSpeed": None
+                          }))
+
+    database.eventlog.insert_one({
+        "type": "followme_end",
+        "timestamp": datetime.datetime.now(),
+        "lv": lv,
+        "fv": fv
+    })
+    database.state.delete_one({"_id": state_id})
 
 def check_followme_speeds():
     for state in database.state.find():
@@ -145,16 +148,21 @@ def check_followme_speeds():
         speed = fv_data.speed
         lane = fv_data.lane
         message = ""
-        if (speed < target_speed - 5 or speed > target_speed + 5) and lane != target_lane:
+        if (speed < target_speed - FOLLOWME_SPEED_WARN_TOLERANCE or speed > target_speed + FOLLOWME_SPEED_WARN_TOLERANCE) and lane != target_lane:
             logger.info(f"Speed and lane of {fv_data.vin} are not within tolerance.")
             message = message + ("Total Missmatch")
         else:
-            if speed < target_speed - 5 or speed > target_speed + 5:
+            if speed < target_speed - FOLLOWME_SPEED_WARN_TOLERANCE or speed > target_speed + FOLLOWME_SPEED_WARN_TOLERANCE:
                 logger.info(f"Speed of {fv_data.vin} is not within tolerance.")
                 message = message + ("Speed Missmatch")
             if lane != target_lane:
                 logger.info(f"Lane of {fv_data.vin} is not the same as the target lane.")
                 message = message + ("Lane Missmatch")
+
+        if speed < target_speed - FOLLOWME_SPEED_END_TOLERANCE or speed > target_speed + FOLLOWME_SPEED_END_TOLERANCE:
+             message = "Speed difference too high. Ending follow me session."
+             end_followme(state["lv"], state["fv"], state["_id"])
+
         if message != "":
             state["successive_check_fails"] += 1
             database.eventlog.insert_one({
