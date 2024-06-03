@@ -50,33 +50,6 @@ public class BeachcombServiceResource {
 
     @GetMapping("/health")
     @ResponseStatus(value = HttpStatus.OK)
-    public void healthCheck() {}
-
-    @GetMapping("/test2")
-    public void test2() {
-        var allVehicles = beachcombService.findVehiclesNearPoint("123", 1.0, 2.0, 0.2);
-        System.out.println(allVehicles);
+    public void healthCheck() {
     }
-
-
-    @GetMapping("/test")
-    public void test() {
-        VehicleDTO vehicleDTO = new VehicleDTO();
-        vehicleDTO.setVin("123");
-        vehicleDTO.setCoordinates(new Coordinates(1.0, 2.0));
-        vehicleDTO.setSpeed(10.0f);
-        vehicleDTO.setLane(1);
-        vehicleDTO.setTimestamp(new Date());
-        vehicleDTO.setTargetLane(2);
-        vehicleDTO.setTargetSpeed(20.0d);
-        String jsonString;
-        try {
-            jsonString = objectMapper.writeValueAsString(vehicleDTO);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        rabbitTemplate.convertAndSend("position", "", jsonString);
-    }
-
 }
