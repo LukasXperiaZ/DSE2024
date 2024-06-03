@@ -17,6 +17,7 @@ public class MongoConfig {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    // Create Indexes for the MongoDB
     @PostConstruct
     public void initIndexes() {
         mongoTemplate.indexOps("vehicles").ensureIndex(

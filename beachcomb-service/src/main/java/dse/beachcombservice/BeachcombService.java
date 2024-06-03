@@ -40,17 +40,22 @@ public class BeachcombService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    // Insert a new vehicle into the database
     public void insert(VehicleDTO vehicleDTO) {
         logger.trace("Inserting vehicle into MongoDB!");
+        // Parse DTO to Model
         LeadingVehicleModel vehicleModel = modelMapper.map(vehicleDTO, LeadingVehicleModel.class);
         vehicleModel.setLocation(List.of(vehicleDTO.getCoordinates().getLongitude(), vehicleDTO.getCoordinates().getLatitude()));
         vehicleRepository.insert(vehicleModel);
     }
 
+    // Returns a map with vehicle-vins and a list with potential FollowMe-Candidates
     public Map<String, List<String>> getFollowMeCandidates() {
         logger.trace("Retrieving FollowMeCandidates from MongoDB!");
+        // Find the newest entry for all vehicles
         var allVehicles = vehicleRepository.findNewestVehiclesGroupedByVin();
         Map<String, List<String>> followMeCandidates = new HashMap<>();
+        // Iterate over the vehicles and find close vehicles
         for (IVehicleModel vehicle : allVehicles) {
             Point location = new Point(vehicle.getLocation().get(0), vehicle.getLocation().get(1));
             var byLocationNear = this.findVehiclesNearPoint(vehicle.getVin(), location.getX(), location.getY(), 0.2);
@@ -60,10 +65,12 @@ public class BeachcombService {
         return followMeCandidates;
     }
 
+    // Returns vehicle data for the given vin
     public VehicleLocationDTO getVehicleLocationByVin(String vin) {
         logger.trace("Retrieving vehicle location by vin!");
         var vehicleLocation = vehicleRepository.findFirstByVinOrderByTimestampDesc(vin);
         if (vehicleLocation == null) throw new VehicleNotFoundException(vin);
+        // parse Model to DTO
         VehicleLocationDTO vehicleLocationDTO = new VehicleLocationDTO();
         vehicleLocationDTO.setVin(vehicleLocation.getVin());
         vehicleLocationDTO.setCoordinates(new Coordinates(vehicleLocation.getLocation().get(0), vehicleLocation.getLocation().get(1)));
@@ -74,17 +81,17 @@ public class BeachcombService {
         return vehicleLocationDTO;
     }
 
+    // Returns a list of vehicles near a given point
     public List<VehicleLocation> findVehiclesNearPoint(String vin, double longitude, double latitude, double maxDistance) {
-
         Date now = new Date();
         Calendar calendar = Calendar.getInstance();
 
-        // Calculate one second before the current time
+        // Calculate 5 second before the current time
         calendar.setTime(now);
         calendar.add(Calendar.SECOND, -5);
         Date oneSecondBefore = calendar.getTime();
 
-        // Calculate one second after the current time
+        // Calculate 5 second after the current time
         calendar.setTime(now);
         calendar.add(Calendar.SECOND, 5);
         Date oneSecondAfter = calendar.getTime();
@@ -102,6 +109,7 @@ public class BeachcombService {
 
         var recentLocations = mongoTemplate.aggregate(aggregation, VehicleLocation.class, Document.class);
         if (recentLocations.getMappedResults().isEmpty()) return new ArrayList<>();
+
         // Step 2: Create a temporary collection and insert the results
         String collectionName = "recentVehicleLocations_" + UUID.randomUUID();
         mongoTemplate.createCollection(collectionName);

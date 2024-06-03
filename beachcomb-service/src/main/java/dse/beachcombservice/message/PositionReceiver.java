@@ -20,6 +20,7 @@ public class PositionReceiver {
     @Autowired
     private BeachcombService beachcombService;
 
+    // Receives a message from RabbitMQ and inserts the vehicle into the database
     @RabbitHandler
     public void receiveMessage(String message) {
         try {

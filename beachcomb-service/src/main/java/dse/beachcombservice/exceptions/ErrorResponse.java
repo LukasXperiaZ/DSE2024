@@ -1,5 +1,6 @@
 package dse.beachcombservice.exceptions;
 
+// Custom Error-Response
 public class ErrorResponse {
     private int statusCode;
     private String message;

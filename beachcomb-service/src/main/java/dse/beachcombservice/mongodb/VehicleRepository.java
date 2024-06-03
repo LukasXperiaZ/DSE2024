@@ -13,6 +13,7 @@ import java.util.List;
 @Repository
 public interface VehicleRepository extends MongoRepository<IVehicleModel, String> {
 
+    // Find the newest entry for all vehicles
     @Aggregation(pipeline = {
             "{ '$match': { 'vin': { '$ne': null } } }",
             "{ '$sort': { 'timestamp': -1 } }",
@@ -21,5 +22,6 @@ public interface VehicleRepository extends MongoRepository<IVehicleModel, String
     })
     List<VehicleLocation> findNewestVehiclesGroupedByVin();
 
+    // Find the newest entry for a specific vehicle
     VehicleControlLocation findFirstByVinOrderByTimestampDesc(String vin);
 }
