@@ -24,9 +24,6 @@ public class BeachcombServiceResource {
     private BeachcombService beachcombService;
     @Autowired
     private RabbitTemplate rabbitTemplate;
-    private ObjectMapper objectMapper = new ObjectMapper();
-    @Autowired
-    private VehicleRepository vehicleRepository;
 
     @PostMapping("/insert")
     public String insert(@Valid @RequestBody VehicleDTO vehicleModel) {
