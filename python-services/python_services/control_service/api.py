@@ -15,6 +15,11 @@ router = APIRouter(tags=["control"], prefix="/control")
 
 @router.get("/eventlog")
 async def get_eventlog(max_length: Optional[int] = None):
+    """
+    Get the eventlog
+    :param max_length: maximum number of events to return
+    :return: eventlog as json
+    """
     logger.info("Listing eventlog")
     if max_length is None:
         max_length = 100000
@@ -23,6 +28,10 @@ async def get_eventlog(max_length: Optional[int] = None):
 
 @router.get("/follow_me_status")
 async def get_follow_me_status():
+    """
+    get the follow me status of all vehicles
+    :return: follow me cars as json
+    """
     follow_me_vehicles = []
     for state in database.state.find():
         follow_me_vehicles.append({
@@ -34,4 +43,8 @@ async def get_follow_me_status():
 
 @router.get("/health")
 async def health():
+    """
+    Health check
+    :return: status code 200/ok
+    """
     return {"status": "ok"}

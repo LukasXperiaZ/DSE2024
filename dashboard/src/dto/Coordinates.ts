@@ -1,4 +1,5 @@
 export class Coordinates {
+  // Represents coordinates.
   longitude: number;
   latitude: number;
 

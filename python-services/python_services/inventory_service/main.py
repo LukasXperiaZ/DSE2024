@@ -8,7 +8,6 @@ from python_services.common.log_config import LOGGING_CONFIG
 from python_services.inventory_service import api
 
 
-
 logger = logging.getLogger(__name__)
 logging.config.dictConfig(LOGGING_CONFIG)
 

@@ -1,5 +1,8 @@
 package dse.datafeeder.dto;
 
+/*
+ * This class represents the state of a Following Vehicle.
+ */
 public class FVState {
     private boolean usesFM;
     private String vinLV;

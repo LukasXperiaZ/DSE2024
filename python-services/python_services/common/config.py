@@ -1,3 +1,7 @@
+"""
+collection of settings that can be set via environment variables
+"""
+
 import os
 
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb://root:example@localhost:27017")

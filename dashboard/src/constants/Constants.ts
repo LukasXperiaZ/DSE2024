@@ -1,4 +1,5 @@
 export class Constants {
+  // Constants used for displaying the positions of cars.
   static readonly FIRST_LANE_LAT = 16.370004;
   static readonly SECOND_LANE_LAT = 16.369975;
   static readonly THIRD_LANE_LAT = 16.369946;

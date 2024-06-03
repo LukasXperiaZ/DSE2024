@@ -1,5 +1,8 @@
 package dse.datafeeder.dto;
 
+/*
+ * This class represents the information that is necessary to register a car in the inventory service.
+ */
 public class RegisterCar {
     private String oem;
     private String model;

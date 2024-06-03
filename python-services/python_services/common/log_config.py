@@ -1,3 +1,8 @@
+"""
+This module contains the logging configuration for the python services.
+configures format and color for the log messages.
+"""
+
 LOGGING_CONFIG = {
     "version": 1,
     "disable_existing_loggers": False,
