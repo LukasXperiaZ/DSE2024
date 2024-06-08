@@ -16,7 +16,8 @@ export class InventoryService {
     if (Config.localDevelopment) {
       this.url = "http://localhost:8001/inventory";
     } else {
-      this.url = window.location.host + "/inventory";
+      this.url = "http://" + window.location.host + "/inventory";
+      console.log("inventory url:  " + this.url)
     }
   }
 
