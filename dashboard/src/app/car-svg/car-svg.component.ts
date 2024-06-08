@@ -34,7 +34,7 @@ export class CarSvgComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getVehicleData();
 
-    setInterval(this.getVehicleData.bind(this), 100);
+    setInterval(this.getVehicleData.bind(this), 500);
   }
 
   ngOnDestroy() {
