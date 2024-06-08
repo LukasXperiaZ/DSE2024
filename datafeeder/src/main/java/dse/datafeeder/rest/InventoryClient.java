@@ -12,7 +12,7 @@ public class InventoryClient {
 
     private final Logger logger = LoggerFactory.getLogger(InventoryClient.class);
 
-    private final String baseUrl = "http://localhost:8001/inventory";
+    private final String baseUrl = "http://34.160.245.93/inventory";
 
     private final RestClient client = RestClient.create();
 

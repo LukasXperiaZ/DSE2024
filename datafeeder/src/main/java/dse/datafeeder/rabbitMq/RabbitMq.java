@@ -22,7 +22,10 @@ public class RabbitMq {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public RabbitMq() {
-        this.rabbitTemplate = new RabbitTemplate(new CachingConnectionFactory());
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory("34.141.72.250");
+        connectionFactory.setUsername("guest");
+        connectionFactory.setPassword("secret");
+        this.rabbitTemplate = new RabbitTemplate(connectionFactory);
     }
 
     public void send(VehicleData vehicleData) {
@@ -34,7 +37,11 @@ public class RabbitMq {
         }
         logger.trace("Sending vehicle data: {}", jsonString);
 
-        rabbitTemplate.convertAndSend(exchange, "", jsonString);
+        try{
+            rabbitTemplate.convertAndSend(exchange, "", jsonString);
+        } catch (Exception e) {
+            logger.error("Error sending vehicle data: {}", e.getMessage());
+        }
     }
 
 }
