@@ -18,6 +18,7 @@ export class ControlService {
       this.url = "http://localhost:8002/control";
     } else {
       this.url = window.location.host + "/control";
+      console.log("window.location.host: " + window.location.host)
     }
   }
 
