@@ -16,7 +16,8 @@ export class BeachCombService {
     if (Config.localDevelopment) {
       this.url = "http://localhost:8000/beachcomb/vehicles/";
     } else {
-      this.url = window.location.host + "/beachcomb/vehicles/";
+      this.url = "http://" + window.location.host + "/beachcomb/vehicles/";
+      console.log("beachComb url:  " + this.url)
     }
   }
 
