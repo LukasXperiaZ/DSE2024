@@ -10,7 +10,7 @@ from python_services.common.config import FOLLOWME_END_TIME, FOLLOWME_SPEED_WARN
 from python_services.control_service import database
 from python_services.control_service.beachcomb_client import get_cars_in_reach, get_vehicle_data
 from python_services.control_service.inventory_client import get_car_base_data
-from python_services.control_service.rabbitmq import channel
+from python_services.control_service.rabbitmq import channel, connection
 
 logger = logging.getLogger(__name__)
 
@@ -213,7 +213,15 @@ def check_followme_speeds():
         else:
             database.state.update_one({"_id": state["_id"]}, {"$set": {"successive_check_fails": 0}})
 
+def process_data_event():
+    """
+    Process the data event.
+    """
+    connection.process_data_events()
+
+
 # schedule the jobs
 schedule.every(5).seconds.do(check_nearing_cars)
 schedule.every(5).seconds.do(check_end_followme)
 schedule.every(5).seconds.do(check_followme_speeds)
+schedule.every(5).seconds.do(process_data_event)
