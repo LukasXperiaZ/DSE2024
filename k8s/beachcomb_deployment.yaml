@@ -29,8 +29,8 @@ spec:
               path: /beachcomb/health
               port: 8080
           env:
-            - name: MONGO_URI
-              value: "mongodb://dse24:HaB1glbuEZRkO9kw@cluster0.cjccyax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            - name: MONGODB_URI
+              value: "mongodb+srv://dse24:HaB1glbuEZRkO9kw@cluster0.cjccyax.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
             - name: SPRING_RABBITMQ_HOST
               value: rabbitmq-service.default
             - name: SPRING_RABBITMQ_PASSWORD
